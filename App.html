@@ -259,6 +259,46 @@
         .overflow-x-auto {
             overflow-x: auto;
         }
+        /* Trading Session Status styles */
+        .session-status-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        @media (min-width: 640px) { /* sm breakpoint */
+            .session-status-grid {
+                grid-template-columns: repeat(4, 1fr); /* 4 columns on larger screens */
+            }
+        }
+        .session-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: #f0f4f8;
+            font-size: 0.875rem;
+            color: #4a5568;
+        }
+        .session-item .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-bottom: 0.25rem;
+        }
+        .session-item.open .status-indicator {
+            background-color: #22c55e; /* Green for open */
+        }
+        .session-item.closed .status-indicator {
+            background-color: #ef4444; /* Red for closed */
+        }
+        /* Styles for the session overlap chart */
+        #tradingSessionsChartCanvas { /* Changed ID */
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            background-color: #ffffff;
+        }
     </style>
 </head>
 <body>
@@ -357,6 +397,31 @@
                         <p>Largest Loss (€)</p>
                         <p id="largestLoss" class="value">0.00 €</p>
                     </div>
+                </div>
+
+                <!-- Trading Session Status -->
+                <h3 class="text-gray-800 mb-4 mt-8">Trading Session Status (UTC)</h3>
+                <div id="sessionStatus" class="session-status-grid mb-4">
+                    <div class="session-item">
+                        <div id="londonStatus" class="status-indicator"></div>
+                        <span>London</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="newYorkStatus" class="status-indicator"></div>
+                        <span>New York</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="tokyoStatus" class="status-indicator"></div>
+                        <span>Tokyo</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="sydneyStatus" class="status-indicator"></div>
+                        <span>Sydney</span>
+                    </div>
+                </div>
+                <!-- NEW: Canvas for session overlap visualization -->
+                <div class="chart-container" style="height: 200px;"> <!-- Increased height for Chart.js -->
+                    <canvas id="tradingSessionsChartCanvas"></canvas>
                 </div>
             </section>
 
@@ -558,6 +623,9 @@
         let assetPerformanceChartInstance = null;
         let tradeTypePerformanceChartInstance = null;
 
+        // Global variable for session overlap chart instance
+        let tradingSessionsChartInstance = null; // Renamed from sessionOverlapChartInstance
+
         document.addEventListener('DOMContentLoaded', function() {
             // Logic to show/hide custom pip value field in calculator
             const currencyPairSelect = document.getElementById('currencyPair');
@@ -615,6 +683,12 @@
             // Load entries from local storage on page load
             loadJournalEntries();
             applyFiltersAndSort(); // Apply filters and sort on load
+            updateTradingSessionStatus(); // Initial update of session status
+            renderTradingSessionsChart(); // Initial draw of session overlap chart (renamed)
+            setInterval(() => {
+                updateTradingSessionStatus();
+                renderTradingSessionsChart(); // Redraw chart to update current time line
+            }, 60000); // Update every minute
         });
 
         // Function to save entries to local storage
@@ -1341,6 +1415,174 @@
                         }
                     }
                 }
+            });
+        }
+
+        // --- Trading Session Status Logic ---
+        function updateTradingSessionStatus() {
+            const now = new Date(); // Current local time
+            const utcHour = now.getUTCHours();
+            const utcMinute = now.getUTCMinutes();
+
+            // Define major trading sessions in UTC hours
+            // London: 08:00 - 16:00 UTC
+            // New York: 13:00 - 21:00 UTC
+            // Tokyo: 00:00 - 09:00 UTC (overlaps with Sydney)
+            // Sydney: 22:00 (previous day) - 07:00 UTC
+
+            const sessions = {
+                london: { start: 8, end: 16, elementId: 'londonStatus' },
+                newYork: { start: 13, end: 21, elementId: 'newYorkStatus' },
+                tokyo: { start: 0, end: 9, elementId: 'tokyoStatus' },
+                sydney: { start: 22, end: 7, elementId: 'sydneyStatus' } // Sydney spans across midnight UTC
+            };
+
+            for (const sessionName in sessions) {
+                const session = sessions[sessionName];
+                const statusElement = document.getElementById(session.elementId);
+                const parentSessionItem = statusElement ? statusElement.closest('.session-item') : null;
+                let isOpen = false;
+
+                if (session.start < session.end) { // Session does not cross midnight UTC
+                    isOpen = (utcHour >= session.start && utcHour < session.end);
+                } else { // Session crosses midnight UTC (e.g., Sydney)
+                    isOpen = (utcHour >= session.start || utcHour < session.end);
+                }
+
+                if (parentSessionItem) {
+                    parentSessionItem.classList.remove('open', 'closed');
+                    parentSessionItem.classList.add(isOpen ? 'open' : 'closed');
+                }
+            }
+        }
+
+        // --- Session Overlap Chart Drawing Logic (using Chart.js) ---
+        // Chart.js plugin to draw a vertical line for current UTC time
+        const currentTimeLinePlugin = {
+            id: 'currentTimeLine',
+            beforeDraw(chart, args, options) {
+                const { ctx, chartArea: { left, right, top, bottom }, scales: { x } } = chart;
+                const now = new Date();
+                const currentUTCHour = now.getUTCHours();
+                const currentUTCMinute = now.getUTCMinutes();
+                const currentTimeInHours = currentUTCHour + currentUTCMinute / 60;
+
+                // Calculate X position of the current time line
+                const pixelX = x.getPixelForValue(currentTimeInHours);
+
+                ctx.save();
+                ctx.beginPath();
+                ctx.strokeStyle = options.lineColor || '#ef4444'; // Red line
+                ctx.lineWidth = options.lineWidth || 2;
+                ctx.moveTo(pixelX, top);
+                ctx.lineTo(pixelX, bottom);
+                ctx.stroke();
+
+                ctx.fillStyle = options.labelColor || '#ef4444';
+                ctx.font = options.labelFont || '12px Inter';
+                ctx.textAlign = 'left';
+                ctx.fillText(`Current: ${currentUTCHour.toString().padStart(2, '0')}:${currentUTCMinute.toString().padStart(2, '0')} UTC`, pixelX + 5, top + 15);
+                ctx.restore();
+            }
+        };
+
+        function renderTradingSessionsChart() {
+            const ctx = document.getElementById('tradingSessionsChartCanvas').getContext('2d');
+
+            // Session data for Chart.js horizontal bar chart
+            const sessionsData = [
+                { name: 'London', start: 8, end: 16, color: 'rgba(59, 130, 246, 0.6)' }, // Blue
+                { name: 'New York', start: 13, end: 21, color: 'rgba(249, 115, 22, 0.6)' }, // Orange
+                { name: 'Tokyo', start: 0, end: 9, color: 'rgba(139, 92, 246, 0.6)' }, // Purple
+                { name: 'Sydney', start: 22, end: 7, color: 'rgba(16, 185, 129, 0.6)' } // Green
+            ];
+
+            const datasets = [];
+            const labels = [];
+
+            sessionsData.forEach(session => {
+                labels.push(session.name);
+                // For sessions crossing midnight, create two segments
+                if (session.start > session.end) {
+                    datasets.push({
+                        label: session.name,
+                        backgroundColor: session.color,
+                        borderColor: session.color.replace('0.6', '1'),
+                        borderWidth: 1,
+                        data: [{ x: [session.start, 24], y: session.name }]
+                    });
+                    datasets.push({
+                        label: session.name,
+                        backgroundColor: session.color,
+                        borderColor: session.color.replace('0.6', '1'),
+                        borderWidth: 1,
+                        data: [{ x: [0, session.end], y: session.name }]
+                    });
+                } else {
+                    datasets.push({
+                        label: session.name,
+                        backgroundColor: session.color,
+                        borderColor: session.color.replace('0.6', '1'),
+                        borderWidth: 1,
+                        data: [{ x: [session.start, session.end], y: session.name }]
+                    });
+                }
+            });
+
+            // Destroy old chart instance if it exists
+            if (tradingSessionsChartInstance) {
+                tradingSessionsChartInstance.destroy();
+            }
+
+            tradingSessionsChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels, // Use session names as Y-axis labels
+                    datasets: datasets
+                },
+                options: {
+                    indexAxis: 'y', // Make it a horizontal bar chart
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false,
+                        },
+                        legend: {
+                            display: false, // Hide dataset legends, labels are on Y-axis
+                        },
+                        currentTimeLine: { // Plugin options
+                            lineColor: '#ef4444',
+                            lineWidth: 2,
+                            labelColor: '#ef4444',
+                            labelFont: '12px Inter'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            type: 'linear',
+                            min: 0,
+                            max: 24,
+                            ticks: {
+                                stepSize: 3, // Show ticks every 3 hours
+                                callback: function(value) {
+                                    return value + 'h'; // Add 'h' suffix
+                                }
+                            },
+                            title: {
+                                display: true,
+                                text: 'Time (UTC)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Session'
+                            }
+                        }
+                    }
+                },
+                plugins: [currentTimeLinePlugin] // Register the plugin
             });
         }
 
