@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Trading Tool</title>
+    <title>Trading Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -299,13 +299,36 @@
             border-radius: 0.5rem;
             background-color: #ffffff;
         }
+
+        /* Goal Tracker styles */
+        .goal-progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+        .goal-progress-bar {
+            height: 20px;
+            background-color: #3b82f6; /* Blue */
+            width: 0%;
+            border-radius: 0.5rem;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            line-height: 20px;
+            transition: width 0.5s ease-in-out;
+        }
+        .goal-progress-bar.achieved {
+            background-color: #10b981; /* Green when achieved */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="text-center mb-8">
-            <h1 class="text-indigo-700 mb-2">My Simple Trading Tool</h1>
-            <p class="text-gray-600">Manage your risk and track your performance (data saved locally).</p>
+            <h1 class="text-indigo-700 mb-2">Trading Tool</h1>
+            <p class="text-gray-600">Manage your risk and track your performance.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -358,7 +381,7 @@
                     </div>
                 </div>
 
-                <!-- Global Performance Statistics Dashboard - MOVED HERE -->
+                <!-- Global Performance Statistics Dashboard -->
                 <h2 class="text-gray-800 mb-6 mt-8">Global Performance Statistics</h2>
                 <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
                     <div class="performance-metric">
@@ -399,6 +422,31 @@
                     </div>
                 </div>
 
+                <!-- Performance Goal Tracker -->
+                <h3 class="text-gray-800 mb-4 mt-8">Performance Goal Tracker</h3>
+                <div id="goalTrackerErrorMessage" class="error-message"></div>
+                <div class="space-y-4">
+                    <div>
+                        <label for="initialCapital">Initial Capital (€) :</label>
+                        <input type="number" id="initialCapital" value="10000" min="1" step="any">
+                    </div>
+                    <div>
+                        <label for="targetPnLEuro">Target P&L (€) :</label>
+                        <input type="number" id="targetPnLEuro" value="1000" min="0.01" step="any">
+                    </div>
+                    <div>
+                        <button onclick="setPerformanceGoal()" class="btn-primary">Set Goal</button>
+                    </div>
+                    <div id="goalProgressDisplay" class="result-box">
+                        <p>Current Progress : <span id="currentGoalProgress">0.00%</span></p>
+                        <div class="goal-progress-bar-container">
+                            <div id="goalProgressBar" class="goal-progress-bar"></div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-2">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
+                    </div>
+                </div>
+
+
                 <!-- Trading Session Status -->
                 <h3 class="text-gray-800 mb-4 mt-8">Trading Session Status (UTC)</h3>
                 <div id="sessionStatus" class="session-status-grid mb-4">
@@ -419,8 +467,8 @@
                         <span>Sydney</span>
                     </div>
                 </div>
-                <!-- NEW: Canvas for session overlap visualization -->
-                <div class="chart-container" style="height: 200px;"> <!-- Increased height for Chart.js -->
+                <!-- Canvas for session overlap visualization -->
+                <div class="chart-container" style="height: 200px;">
                     <canvas id="tradingSessionsChartCanvas"></canvas>
                 </div>
             </section>
@@ -612,19 +660,22 @@
     <script>
         // Key for local storage
         const LOCAL_STORAGE_KEY = 'tradingJournalEntries';
+        const GOAL_STORAGE_KEY = 'tradingPerformanceGoal'; // New key for goal storage
 
         // Array to store journal entries
         let journalEntries = [];
         // Variable to store the index of the entry being edited
         let editingEntryIndex = -1; 
 
+        // Goal tracking variables
+        let initialCapital = 10000; // Default
+        let targetPnLEuro = 1000; // Default
+
         // Global variables for Chart.js instances
         let equityCurveChartInstance = null;
         let assetPerformanceChartInstance = null;
         let tradeTypePerformanceChartInstance = null;
-
-        // Global variable for session overlap chart instance
-        let tradingSessionsChartInstance = null; // Renamed from sessionOverlapChartInstance
+        let tradingSessionsChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', function() {
             // Logic to show/hide custom pip value field in calculator
@@ -680,11 +731,17 @@
             // Handle Cancel Edit button
             document.getElementById('cancelEditBtn').addEventListener('click', cancelEdit);
 
-            // Load entries from local storage on page load
+            // Load entries and goals from local storage on page load
             loadJournalEntries();
-            applyFiltersAndSort(); // Apply filters and sort on load
-            updateTradingSessionStatus(); // Initial update of session status
-            renderTradingSessionsChart(); // Initial draw of session overlap chart (renamed)
+            loadPerformanceGoal(); // Load goal
+            
+            // Initial render and updates
+            applyFiltersAndSort(); 
+            updateTradingSessionStatus(); 
+            renderTradingSessionsChart(); 
+            updatePerformanceGoalDisplay(); // Update goal display on load
+
+            // Set intervals for dynamic updates
             setInterval(() => {
                 updateTradingSessionStatus();
                 renderTradingSessionsChart(); // Redraw chart to update current time line
@@ -711,6 +768,97 @@
                 });
             }
         }
+
+        // Function to save performance goal to local storage
+        function savePerformanceGoal() {
+            const goal = {
+                initialCapital: initialCapital,
+                targetPnLEuro: targetPnLEuro
+            };
+            localStorage.setItem(GOAL_STORAGE_KEY, JSON.stringify(goal));
+            console.log("Performance goal saved:", goal);
+        }
+
+        // Function to load performance goal from local storage
+        function loadPerformanceGoal() {
+            const storedGoal = localStorage.getItem(GOAL_STORAGE_KEY);
+            if (storedGoal) {
+                const goal = JSON.parse(storedGoal);
+                initialCapital = goal.initialCapital || 10000;
+                targetPnLEuro = goal.targetPnLEuro || 1000;
+                // Update input fields with loaded values
+                document.getElementById('initialCapital').value = initialCapital;
+                document.getElementById('targetPnLEuro').value = targetPnLEuro;
+                console.log("Performance goal loaded:", goal);
+            }
+        }
+
+        // Function to set performance goal from input fields
+        function setPerformanceGoal() {
+            const initialCap = parseFloat(document.getElementById('initialCapital').value);
+            const targetPnL = parseFloat(document.getElementById('targetPnLEuro').value);
+            const goalErrorMessageDiv = document.getElementById('goalTrackerErrorMessage');
+
+            goalErrorMessageDiv.classList.remove('show');
+
+            if (isNaN(initialCap) || initialCap <= 0) {
+                goalErrorMessageDiv.textContent = "Please enter a valid Initial Capital (> 0).";
+                goalErrorMessageDiv.classList.add('show');
+                return;
+            }
+            if (isNaN(targetPnL) || targetPnL <= 0) {
+                goalErrorMessageDiv.textContent = "Please enter a valid Target P&L (> 0).";
+                goalErrorMessageDiv.classList.add('show');
+                return;
+            }
+
+            initialCapital = initialCap;
+            targetPnLEuro = targetPnL;
+            savePerformanceGoal();
+            updatePerformanceGoalDisplay();
+            goalErrorMessageDiv.classList.remove('show');
+        }
+
+        // Function to initialize Target P&L from Current P&L (Removed as per user request)
+        // function initializeTargetFromCurrentPnL() {
+        //     const totalPnLText = document.getElementById('totalPnL').textContent;
+        //     const currentTotalPnL = parseFloat(totalPnLText.replace(' €', '')); // Remove ' €' and parse
+            
+        //     if (!isNaN(currentTotalPnL)) {
+        //         document.getElementById('targetPnLEuro').value = currentTotalPnL.toFixed(2);
+        //         setPerformanceGoal();
+        //     } else {
+        //         document.getElementById('goalTrackerErrorMessage').textContent = "Cannot set target from current P&L: No valid P&L data.";
+        //         document.getElementById('goalTrackerErrorMessage').classList.add('show');
+        //     }
+        // }
+
+        // Function to update the display of the performance goal progress
+        function updatePerformanceGoalDisplay() {
+            const totalPnL = journalEntries.reduce((sum, entry) => sum + entry.resultEuro, 0);
+            const progressPercentage = (totalPnL / targetPnLEuro * 100).toFixed(2);
+            
+            const currentGoalProgressElement = document.getElementById('currentGoalProgress');
+            const goalProgressBarElement = document.getElementById('goalProgressBar');
+            const goalProgressDisplayBox = document.getElementById('goalProgressDisplay');
+
+            currentGoalProgressElement.textContent = `${progressPercentage}%`;
+            
+            let progressBarWidth = Math.min(100, Math.max(0, progressPercentage)); // Clamp between 0 and 100
+            goalProgressBarElement.style.width = `${progressBarWidth}%`;
+
+            goalProgressBarElement.classList.remove('achieved');
+            if (progressPercentage >= 100) {
+                goalProgressBarElement.classList.add('achieved');
+                goalProgressBarElement.textContent = 'Goal Achieved!';
+            } else {
+                goalProgressBarElement.textContent = ''; // Clear text if not achieved
+            }
+
+            goalProgressDisplayBox.classList.add('show'); // Ensure the display box is visible
+            console.log("Performance goal display updated. Progress:", progressPercentage + "%");
+        }
+
 
         // Function to calculate position size
         function calculatePositionSize() {
@@ -815,6 +963,7 @@
             journalEntries.unshift(newEntry); // Add new entry to the beginning of the array
             saveJournalEntries(); // Save entries after adding
             applyFiltersAndSort(); // Re-apply filters and sort to include the new entry
+            updatePerformanceGoalDisplay(); // Update goal display after new trade
             document.getElementById('journalForm').reset(); // Reset the form
         }
 
@@ -840,6 +989,7 @@
                 console.log("Entry updated in array:", journalEntries[editingEntryIndex]); // Updated entry log
                 saveJournalEntries();
                 applyFiltersAndSort(); // Re-apply filters and sort to reflect the modification
+                updatePerformanceGoalDisplay(); // Update goal display after trade update
             } else {
                 console.error("Error: invalid editingEntryIndex or entry not found.");
                 journalErrorMessageDiv.textContent = "Error updating entry.";
@@ -966,6 +1116,7 @@
                 journalEntries.splice(index, 1); // Remove entry from array
                 saveJournalEntries(); // Save changes
                 applyFiltersAndSort(); // Re-apply filters and sort after deletion
+                updatePerformanceGoalDisplay(); // Update goal display after trade deletion
                 resetJournalForm(); // Reset form in case the deleted entry was being edited
             });
         }
