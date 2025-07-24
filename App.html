@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Outil de Trading Simple</title>
+    <title>My Trading App</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
-        /* Police Inter pour une meilleure lisibilité */
+        /* Inter font for better readability */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Un gris clair pour le fond */
+            background-color: #f0f4f8; /* Light gray background */
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Aligner en haut pour le défilement */
+            align-items: flex-start; /* Align to top for scrolling */
             min-height: 100vh;
             padding: 20px;
         }
@@ -24,12 +24,12 @@
             border-radius: 1rem;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 1200px; /* Largeur max pour les grands écrans */
+            max-width: 1200px; /* Max width for larger screens */
             border: 1px solid #e2e8f0;
         }
         h1 {
             color: #2d3748;
-            font-size: 2.25rem; /* Plus grand titre */
+            font-size: 2.25rem; /* Larger title font size */
             font-weight: 700;
             margin-bottom: 1.5rem;
             text-align: center;
@@ -87,25 +87,25 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #6366f1; /* Bleu violet */
+            background-color: #6366f1; /* Violet blue */
         }
         .btn-primary:hover {
             background-color: #4f46e5;
         }
         .btn-secondary {
-            background-color: #22c55e; /* Vert */
+            background-color: #22c55e; /* Green */
         }
         .btn-secondary:hover {
             background-color: #16a34a;
         }
         .btn-danger {
-            background-color: #ef4444; /* Rouge */
+            background-color: #ef4444; /* Red */
         }
         .btn-danger:hover {
             background-color: #dc2626;
         }
         .btn-info {
-            background-color: #3b82f6; /* Bleu */
+            background-color: #3b82f6; /* Blue */
         }
         .btn-info:hover {
             background-color: #2563eb;
@@ -137,12 +137,12 @@
             display: block;
         }
         .journal-entry {
-            background-color: #f8fafc; /* Très léger gris bleu */
+            background-color: #f8fafc; /* Very light blue-gray */
             padding: 1rem;
             border-radius: 0.75rem;
             border: 1px solid #e2e8f0;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: relative; /* Pour positionner les boutons */
+            position: relative; /* For positioning buttons */
         }
         .journal-entry p {
             margin-bottom: 0.25rem;
@@ -155,35 +155,35 @@
             color: #2d3748;
         }
         .journal-entry .result-positive {
-            color: #10b981; /* Vert émeraude */
+            color: #10b981; /* Emerald green */
             font-weight: 700;
         }
         .journal-entry .result-negative {
-            color: #ef4444; /* Rouge */
+            color: #ef4444; /* Red */
             font-weight: 700;
         }
         .journal-actions {
             display: flex;
             gap: 0.5rem;
             margin-top: 1rem;
-            justify-content: flex-end; /* Aligner les boutons à droite */
+            justify-content: flex-end; /* Align buttons to the right */
         }
         .journal-actions button {
-            width: auto; /* Les boutons ne prennent pas toute la largeur */
+            width: auto; /* Buttons don't take full width */
             padding: 0.5rem 1rem;
             font-size: 0.875rem;
             border-radius: 0.5rem;
-            box-shadow: none; /* Pas d'ombre supplémentaire pour les petits boutons */
+            box-shadow: none; /* No extra shadow for small buttons */
         }
         .journal-actions button:hover {
-            transform: none; /* Pas d'effet de soulèvement pour les petits boutons */
+            transform: none; /* No lift effect for small buttons */
         }
         .journal-actions button:active {
             transform: none;
         }
-        /* Styles pour le tableau de bord de performance */
+        /* Styles for performance dashboard */
         .performance-metric {
-            background-color: #e0f2fe; /* Bleu clair */
+            background-color: #e0f2fe; /* Light blue */
             padding: 1rem;
             border-radius: 0.75rem;
             text-align: center;
@@ -194,15 +194,15 @@
             color: #4a5568;
         }
         .performance-metric .value {
-            font-size: 1.75rem; /* Taille de police plus grande */
+            font-size: 1.75rem; /* Larger font size */
             font-weight: 700;
-            color: #1d4ed8; /* Bleu foncé */
+            color: #1d4ed8; /* Dark blue */
         }
         .performance-metric.positive .value {
-            color: #10b981; /* Vert pour les gains */
+            color: #10b981; /* Green for gains */
         }
         .performance-metric.negative .value {
-            color: #ef4444; /* Rouge pour les pertes */
+            color: #ef4444; /* Red for losses */
         }
         .detailed-stats-card {
             background-color: #f8fafc;
@@ -248,10 +248,10 @@
             color: #ef4444;
             font-weight: 600;
         }
-        /* Styles spécifiques pour les conteneurs de graphiques */
+        /* Specific styles for chart containers */
         .chart-container {
             position: relative;
-            height: 300px; /* Hauteur fixe pour les graphiques */
+            height: 300px; /* Fixed height for charts */
             width: 100%;
             margin-bottom: 1.5rem;
         }
@@ -260,114 +260,73 @@
 <body>
     <div class="container">
         <header class="text-center mb-8">
-            <h1 class="text-indigo-700 mb-2">Mon Outil de Trading Simple</h1>
-            <p class="text-gray-600">Gérez votre risque et suivez vos performances (données sauvegardées localement).</p>
+            <h1 class="text-indigo-700 mb-2">My Trading App</h1>
+            <p class="text-gray-600">Manage your risk and track your performance.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Tableau de bord de Statistiques de Performance -->
+            <!-- Global Performance Statistics Dashboard -->
             <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
-                <h2 class="text-gray-800 mb-6">Statistiques Globales de Performance</h2>
+                <h2 class="text-gray-800 mb-6">Global Performance Statistics</h2>
                 <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
                     <div class="performance-metric">
                         <p>Total Trades</p>
                         <p id="totalTrades" class="value">0</p>
                     </div>
                     <div class="performance-metric positive">
-                        <p>Trades Gagnants</p>
+                        <p>Winning Trades</p>
                         <p id="winningTrades" class="value">0</p>
                     </div>
                     <div class="performance-metric negative">
-                        <p>Trades Perdants</p>
+                        <p>Losing Trades</p>
                         <p id="losingTrades" class="value">0</p>
                     </div>
                     <div class="performance-metric">
-                        <p>Taux de Réussite</p>
+                        <p>Win Rate</p>
                         <p id="winRate" class="value">0.00%</p>
                     </div>
                     <div class="performance-metric" id="totalPnLMetric">
-                        <p>P&L Total (€)</p>
+                        <p>Total P&L (€)</p>
                         <p id="totalPnL" class="value">0.00 €</p>
                     </div>
                     <div class="performance-metric" id="totalPnLPercentageMetric">
-                        <p>P&L Total (%)</p>
+                        <p>Total P&L (%)</p>
                         <p id="totalPnLPercentage" class="value">0.00%</p>
                     </div>
                     <div class="performance-metric" id="avgPnLMetric">
-                        <p>P&L Moyen par Trade (€)</p>
+                        <p>Avg P&L per Trade (€)</p>
                         <p id="avgPnL" class="value">0.00 €</p>
                     </div>
                     <div class="performance-metric positive">
-                        <p>Plus Gros Gain (€)</p>
+                        <p>Largest Win (€)</p>
                         <p id="largestWin" class="value">0.00 €</p>
                     </div>
                     <div class="performance-metric negative">
-                        <p>Plus Grosse Perte (€)</p>
+                        <p>Largest Loss (€)</p>
                         <p id="largestLoss" class="value">0.00 €</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Statistiques Détaillées et Graphiques -->
-            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
-                <h2 class="text-gray-800 mb-6">Statistiques Détaillées et Graphiques</h2>
-                
-                <!-- Graphique de la Courbe de Capital -->
-                <h3 class="text-gray-800 mb-4 mt-8">Courbe de Capital (P&L Cumulé)</h3>
-                <div class="chart-container">
-                    <canvas id="equityCurveChart"></canvas>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="detailed-stats-card">
-                        <h4>Performance par Actif</h4>
-                        <div id="performanceByAssetTable">
-                            <p class="text-center text-gray-600">Aucune donnée d'actif disponible.</p>
-                        </div>
-                    </div>
-                    <div class="detailed-stats-card">
-                        <h4>Performance par Type de Trade</h4>
-                        <div id="performanceByTradeTypeTable">
-                            <p class="text-center text-gray-600">Aucune donnée de type de trade disponible.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div class="detailed-stats-card">
-                        <h4>Performance par Actif (Graphique)</h4>
-                        <div class="chart-container">
-                            <canvas id="assetPerformanceChart"></canvas>
-                        </div>
-                    </div>
-                    <div class="detailed-stats-card">
-                        <h4>Performance par Type de Trade (Graphique)</h4>
-                        <div class="chart-container">
-                            <canvas id="tradeTypePerformanceChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Calculateur de Taille de Position -->
+            <!-- Position Size Calculator -->
             <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-6">Calculateur de Taille de Position</h2>
+                <h2 class="text-gray-800 mb-6">Position Size Calculator</h2>
                 <div id="calcErrorMessage" class="error-message"></div>
                 <div class="space-y-4">
                     <div>
-                        <label for="capital">Capital du Compte (€) :</label>
+                        <label for="capital">Account Capital (€) :</label>
                         <input type="number" id="capital" value="10000" min="1" step="any">
                     </div>
                     <div>
-                        <label for="riskPercentage">Pourcentage de Risque par Trade (%) :</label>
+                        <label for="riskPercentage">Risk Percentage per Trade (%) :</label>
                         <input type="number" id="riskPercentage" value="1" min="0.1" max="10" step="0.1">
                     </div>
                     <div>
-                        <label for="stopLossPips">Stop Loss (en Pips) :</label>
+                        <label for="stopLossPips">Stop Loss (in Pips) :</label>
                         <input type="number" id="stopLossPips" value="20" min="1" step="any">
                     </div>
                     <div>
-                        <label for="currencyPair">Paire de Devises / Actif :</label>
+                        <label for="currencyPair">Currency Pair / Asset :</label>
                         <select id="currencyPair">
                             <option value="EURUSD">EUR/USD</option>
                             <option value="GBPUSD">GBP/USD</option>
@@ -378,30 +337,30 @@
                             <option value="NZDUSD">NZD/USD</option>
                             <option value="EURJPY">EUR/JPY</option>
                             <option value="GBPJPY">GBP/JPY</option>
-                            <option value="XAUUSD">Or (XAU/USD)</option>
-                            <option value="DAX40">DAX 40 (Allemagne)</option>
+                            <option value="XAUUSD">Gold (XAU/USD)</option>
+                            <option value="DAX40">DAX 40 (Germany)</option>
                             <option value="SP500">S&P 500 (USA)</option>
                             <option value="NASDAQ100">NASDAQ 100 (USA)</option>
                             <option value="CAC40">CAC 40 (France)</option>
-                            <option value="custom">Autre (entrer la valeur du pip)</option>
+                            <option value="custom">Other (enter pip value)</option>
                         </select>
                     </div>
                     <div id="customPipValueContainer" style="display: none;">
-                        <label for="customPipValue">Valeur du Pip/Point par Lot Standard (€) :</label>
+                        <label for="customPipValue">Pip/Point Value per Standard Lot (€) :</label>
                         <input type="number" id="customPipValue" value="10" min="0.01" step="any">
                     </div>
-                    <button onclick="calculatePositionSize()" class="btn-primary">Calculer la Taille de Position</button>
+                    <button onclick="calculatePositionSize()" class="btn-primary">Calculate Position Size</button>
                     <div id="resultBox" class="result-box">
-                        <p>Taille de Position Recommandée : <span id="lotSize"></span> lots</p>
-                        <p>Valeur du Pip/Point : <span id="pipValueDisplay"></span> €</p>
-                        <p>Montant Risqué : <span id="amountRisqued"></span> €</p>
+                        <p>Recommended Position Size : <span id="lotSize"></span> lots</p>
+                        <p>Pip/Point Value : <span id="pipValueDisplay"></span> €</p>
+                        <p>Amount Risked : <span id="amountRisqued"></span> €</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Journal de Trading -->
+            <!-- Trading Journal -->
             <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-6">Journal de Trading</h2>
+                <h2 class="text-gray-800 mb-6">Trading Journal</h2>
                 <div id="journalErrorMessage" class="error-message"></div>
                 <form id="journalForm" class="space-y-4 mb-8">
                     <div>
@@ -409,23 +368,40 @@
                         <input type="date" id="journalDate" required>
                     </div>
                     <div>
-                        <label for="journalAsset">Actif :</label>
-                        <input type="text" id="journalAsset" placeholder="Ex: EUR/USD, DAX40, AAPL" required>
+                        <label for="journalAsset">Asset :</label>
+                        <select id="journalAssetSelect">
+                            <option value="EURUSD">EUR/USD</option>
+                            <option value="GBPUSD">GBP/USD</option>
+                            <option value="USDJPY">USD/JPY</option>
+                            <option value="AUDUSD">AUD/USD</option>
+                            <option value="USDCAD">USD/CAD</option>
+                            <option value="USDCHF">USD/CHF</option>
+                            <option value="NZDUSD">NZD/USD</option>
+                            <option value="EURJPY">EUR/JPY</option>
+                            <option value="GBPJPY">GBP/JPY</option>
+                            <option value="XAUUSD">Gold (XAU/USD)</option>
+                            <option value="DAX40">DAX 40 (Germany)</option>
+                            <option value="SP500">S&P 500 (USA)</option>
+                            <option value="NASDAQ100">NASDAQ 100 (USA)</option>
+                            <option value="CAC40">CAC 40 (France)</option>
+                            <option value="other">Other (enter name)</option>
+                        </select>
+                        <input type="text" id="journalAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.5rem;">
                     </div>
                     <div>
-                        <label for="journalTradeType">Type de Trade :</label>
+                        <label for="journalTradeType">Trade Type :</label>
                         <select id="journalTradeType">
-                            <option value="Achat">Achat (Long)</option>
-                            <option value="Vente">Vente (Short)</option>
+                            <option value="Buy">Buy (Long)</option>
+                            <option value="Sell">Sell (Short)</option>
                         </select>
                     </div>
                     <div>
                         <label for="journalSetup">Setup :</label>
-                        <input type="text" id="journalSetup" placeholder="Ex: Rupture de résistance, Rejet MVA">
+                        <input type="text" id="journalSetup" placeholder="Ex: Resistance breakout, MA rejection">
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div>
-                            <label for="journalEntryPrice">Entrée :</label>
+                            <label for="journalEntryPrice">Entry :</label>
                             <input type="number" id="journalEntryPrice" step="any" required>
                         </div>
                         <div>
@@ -442,87 +418,128 @@
                         <input type="text" id="journalRRR" placeholder="Ex: 1:2">
                     </div>
                     <div>
-                        <label for="journalPositionSize">Taille de Position :</label>
+                        <label for="journalPositionSize">Position Size :</label>
                         <input type="number" id="journalPositionSize" step="any" required>
                     </div>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                            <label for="journalResultEuro">Résultat (€) :</label>
+                            <label for="journalResultEuro">Result (€) :</label>
                             <input type="number" id="journalResultEuro" step="any" required>
                         </div>
                         <div>
-                            <label for="journalResultPercentage">Résultat (%) :</label>
+                            <label for="journalResultPercentage">Result (%) :</label>
                             <input type="number" id="journalResultPercentage" step="any" required>
                         </div>
                     </div>
                     <div>
-                        <label for="journalComment">Commentaire / Émotion :</label>
-                        <textarea id="journalComment" rows="3" placeholder="Notes sur le trade, émotions ressenties..."></textarea>
+                        <label for="journalComment">Comment / Emotion :</label>
+                        <textarea id="journalComment" rows="3" placeholder="Notes on the trade, felt emotions..."></textarea>
                     </div>
-                    <button type="submit" class="btn-secondary" id="addUpdateJournalBtn">Ajouter au Journal</button>
-                    <button type="button" class="btn-info" id="cancelEditBtn" style="display:none;">Annuler la Modification</button>
+                    <button type="submit" class="btn-secondary" id="addUpdateJournalBtn">Add to Journal</button>
+                    <button type="button" class="btn-info" id="cancelEditBtn" style="display:none;">Cancel Edit</button>
                 </form>
 
-                <h3 class="text-gray-800 mb-4 mt-8">Options de Filtrage et de Tri</h3>
+                <h3 class="text-gray-800 mb-4 mt-8">Filter & Sort Options</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     <div>
-                        <label for="filterAsset">Filtrer par Actif :</label>
+                        <label for="filterAsset">Filter by Asset :</label>
                         <input type="text" id="filterAsset" placeholder="Ex: EUR/USD" onkeyup="applyFiltersAndSort()">
                     </div>
                     <div>
-                        <label for="filterTradeType">Filtrer par Type de Trade :</label>
+                        <label for="filterTradeType">Filter by Trade Type :</label>
                         <select id="filterTradeType" onchange="applyFiltersAndSort()">
-                            <option value="">Tous</option>
-                            <option value="Achat">Achat</option>
-                            <option value="Vente">Vente</option>
+                            <option value="">All</option>
+                            <option value="Buy">Buy</option>
+                            <option value="Sell">Sell</option>
                         </select>
                     </div>
                     <div>
-                        <label for="sortBy">Trier par :</label>
+                        <label for="sortBy">Sort by :</label>
                         <select id="sortBy" onchange="applyFiltersAndSort()">
                             <option value="timestamp">Date</option>
-                            <option value="resultEuro">Résultat (€)</option>
-                            <option value="resultPercentage">Résultat (%)</option>
-                            <option value="asset">Actif</option>
+                            <option value="resultEuro">Result (€)</option>
+                            <option value="resultPercentage">Result (%)</option>
+                            <option value="asset">Asset</option>
                         </select>
                     </div>
                     <div>
-                        <label for="sortOrder">Ordre :</label>
+                        <label for="sortOrder">Order :</label>
                         <select id="sortOrder" onchange="applyFiltersAndSort()">
-                            <option value="desc">Décroissant</option>
-                            <option value="asc">Croissant</option>
+                            <option value="desc">Descending</option>
+                            <option value="asc">Ascending</option>
                         </select>
                     </div>
                 </div>
-                <button onclick="resetFiltersAndSort()" class="btn-danger mb-8">Réinitialiser les Filtres et le Tri</button>
+                <button onclick="resetFiltersAndSort()" class="btn-danger mb-8">Reset Filters & Sort</button>
 
 
-                <h3 class="text-gray-800 mb-4 mt-8">Mes Entrées de Journal</h3>
+                <h3 class="text-gray-800 mb-4 mt-8">My Journal Entries</h3>
                 <!-- Moved noEntriesMessage outside journalEntriesContainer -->
-                <p class="text-center text-gray-600" id="noEntriesMessage">Aucune entrée de journal pour le moment. Ajoutez votre premier trade !</p>
+                <p class="text-center text-gray-600" id="noEntriesMessage">No journal entries yet. Add your first trade!</p>
                 <div id="journalEntriesContainer" class="space-y-4">
-                    <!-- Les entrées du journal seront ajoutées ici par JavaScript -->
+                    <!-- Journal entries will be added here by JavaScript -->
+                </div>
+            </section>
+
+            <!-- Detailed Statistics & Charts -->
+            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
+                <h2 class="text-gray-800 mb-6">Detailed Statistics & Charts</h2>
+                
+                <!-- Equity Curve Chart -->
+                <h3 class="text-gray-800 mb-4 mt-8">Equity Curve (Cumulative P&L)</h3>
+                <div class="chart-container">
+                    <canvas id="equityCurveChart"></canvas>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="detailed-stats-card">
+                        <h4>Performance by Asset (Table)</h4>
+                        <div id="performanceByAssetTable">
+                            <p class="text-center text-gray-600">No asset data available.</p>
+                        </div>
+                    </div>
+                    <div class="detailed-stats-card">
+                        <h4>Performance by Trade Type (Table)</h4>
+                        <div id="performanceByTradeTypeTable">
+                            <p class="text-center text-gray-600">No trade type data available.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                    <div class="detailed-stats-card">
+                        <h4>Performance by Asset (Chart)</h4>
+                        <div class="chart-container">
+                            <canvas id="assetPerformanceChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="detailed-stats-card">
+                        <h4>Performance by Trade Type (Chart)</h4>
+                        <div class="chart-container">
+                            <canvas id="tradeTypePerformanceChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
     </div>
 
     <script>
-        // Clé pour le stockage local
+        // Key for local storage
         const LOCAL_STORAGE_KEY = 'tradingJournalEntries';
 
-        // Tableau pour stocker les entrées du journal
+        // Array to store journal entries
         let journalEntries = [];
-        // Variable pour stocker l'index de l'entrée en cours de modification
+        // Variable to store the index of the entry being edited
         let editingEntryIndex = -1; 
 
-        // Variables globales pour les instances de graphique Chart.js
+        // Global variables for Chart.js instances
         let equityCurveChartInstance = null;
         let assetPerformanceChartInstance = null;
         let tradeTypePerformanceChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Logique pour afficher/masquer le champ de valeur de pip personnalisé
+            // Logic to show/hide custom pip value field in calculator
             const currencyPairSelect = document.getElementById('currencyPair');
             const customPipValueContainer = document.getElementById('customPipValueContainer');
             currencyPairSelect.addEventListener('change', function() {
@@ -533,10 +550,23 @@
                 }
             });
 
-            // Gérer la soumission du formulaire du journal
+            // Logic to show/hide custom asset input in journal
+            const journalAssetSelect = document.getElementById('journalAssetSelect');
+            const journalAssetCustomInput = document.getElementById('journalAssetCustom');
+            journalAssetSelect.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    journalAssetCustomInput.style.display = 'block';
+                    journalAssetCustomInput.setAttribute('required', 'required'); // Make required when visible
+                } else {
+                    journalAssetCustomInput.style.display = 'none';
+                    journalAssetCustomInput.removeAttribute('required'); // Remove required when hidden
+                }
+            });
+
+            // Handle journal form submission
             const journalForm = document.getElementById('journalForm');
             journalForm.addEventListener('submit', function(event) {
-                event.preventDefault(); // Empêcher le rechargement de la page
+                event.preventDefault(); // Prevent page reload
                 if (editingEntryIndex === -1) {
                     addJournalEntry();
                 } else {
@@ -544,27 +574,27 @@
                 }
             });
 
-            // Gérer le bouton Annuler la Modification
+            // Handle Cancel Edit button
             document.getElementById('cancelEditBtn').addEventListener('click', cancelEdit);
 
-            // Charger les entrées depuis le stockage local au chargement de la page
+            // Load entries from local storage on page load
             loadJournalEntries();
-            applyFiltersAndSort(); // Appliquer les filtres et le tri au chargement
+            applyFiltersAndSort(); // Apply filters and sort on load
         });
 
-        // Fonction pour sauvegarder les entrées dans le stockage local
+        // Function to save entries to local storage
         function saveJournalEntries() {
-            console.log("Sauvegarde des entrées:", journalEntries); // Log de sauvegarde
+            console.log("Saving entries:", journalEntries); // Save log
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(journalEntries));
         }
 
-        // Fonction pour charger les entrées depuis le stockage local
+        // Function to load entries from local storage
         function loadJournalEntries() {
             const storedEntries = localStorage.getItem(LOCAL_STORAGE_KEY);
             if (storedEntries) {
                 journalEntries = JSON.parse(storedEntries);
-                console.log("Entrées chargées:", journalEntries); // Log de chargement
-                // Assurez-vous que les timestamps sont des objets Date pour le tri si nécessaire
+                console.log("Entries loaded:", journalEntries); // Load log
+                // Ensure timestamps are Date objects for sorting if necessary
                 journalEntries.forEach(entry => {
                     if (typeof entry.timestamp === 'string') {
                         entry.timestamp = new Date(entry.timestamp);
@@ -573,7 +603,7 @@
             }
         }
 
-        // Fonction pour calculer la taille de position
+        // Function to calculate position size
         function calculatePositionSize() {
             const capital = parseFloat(document.getElementById('capital').value);
             const riskPercentage = parseFloat(document.getElementById('riskPercentage').value);
@@ -582,64 +612,64 @@
             const calcErrorMessageDiv = document.getElementById('calcErrorMessage');
             const resultBox = document.getElementById('resultBox');
 
-            // Cacher les messages et résultats précédents
+            // Hide previous messages and results
             calcErrorMessageDiv.classList.remove('show');
             resultBox.classList.remove('show');
 
-            // Validation des entrées
+            // Input validation
             if (isNaN(capital) || capital <= 0) {
-                calcErrorMessageDiv.textContent = "Veuillez entrer un capital valide (> 0).";
+                calcErrorMessageDiv.textContent = "Please enter a valid capital (> 0).";
                 calcErrorMessageDiv.classList.add('show');
                 return;
             }
             if (isNaN(riskPercentage) || riskPercentage <= 0 || riskPercentage > 100) {
-                calcErrorMessageDiv.textContent = "Veuillez entrer un pourcentage de risque valide (entre 0.1 et 100).";
+                calcErrorMessageDiv.textContent = "Please enter a valid risk percentage (between 0.1 and 100).";
                 calcErrorMessageDiv.classList.add('show');
                 return;
             }
             if (isNaN(stopLossPips) || stopLossPips <= 0) {
-                calcErrorMessageDiv.textContent = "Veuillez entrer une valeur de Stop Loss valide (> 0).";
+                calcErrorMessageDiv.textContent = "Please enter a valid Stop Loss value (> 0).";
                 calcErrorMessageDiv.classList.add('show');
                 return;
             }
 
-            let pipValuePerStandardLot; // Valeur du pip pour un lot standard (100 000 unités) en EUR
+            let pipValuePerStandardLot; // Pip value for a standard lot (100,000 units) in EUR
             
-            // Définir la valeur du pip par lot standard en fonction de la paire
-            // Ces valeurs sont des approximations pour un compte en EUR.
-            // Pour les paires en USD/JPY, la valeur est pour 100 000 unités de base (USD).
-            // Pour les indices, la valeur est par point.
+            // Define pip value per standard lot based on the pair
+            // These values are approximations for an EUR account.
+            // For USD/JPY pairs, the value is for 100,000 base units (USD).
+            // For indices, the value is per point.
             switch (currencyPair) {
                 case 'EURUSD':
                 case 'GBPUSD':
                 case 'AUDUSD':
                 case 'NZDUSD':
-                    pipValuePerStandardLot = 10; // 1 pip = 10 USD pour un lot standard, converti en EUR si le compte est en EUR
+                    pipValuePerStandardLot = 10; // 1 pip = 10 USD for a standard lot, converted to EUR if account is in EUR
                     break;
                 case 'USDJPY':
-                    pipValuePerStandardLot = 8.5; // Approximation, dépend du taux de change USD/JPY et EUR/USD
+                    pipValuePerStandardLot = 8.5; // Approximation, depends on USD/JPY and EUR/USD exchange rates
                     break;
                 case 'USDCAD':
                 case 'USDCHF':
-                    pipValuePerStandardLot = 10; // 1 pip = 10 USD pour un lot standard, converti en EUR
+                    pipValuePerStandardLot = 10; // 1 pip = 10 USD for a standard lot, converted to EUR
                     break;
                 case 'EURJPY':
                 case 'GBPJPY':
-                    pipValuePerStandardLot = 8.5; // Approximation, dépend du taux de change JPY/EUR
+                    pipValuePerStandardLot = 8.5; // Approximation, depends on JPY/EUR exchange rate
                     break;
-                case 'XAUUSD': // Or
-                    pipValuePerStandardLot = 10; // 1 point = 10 USD pour un lot standard (100 onces), converti en EUR
+                case 'XAUUSD': // Gold
+                    pipValuePerStandardLot = 10; // 1 point = 10 USD for a standard lot (100 ounces), converted to EUR
                     break;
                 case 'DAX40': // DAX 40
                 case 'SP500': // S&P 500
                 case 'NASDAQ100': // NASDAQ 100
                 case 'CAC40': // CAC 40
-                    pipValuePerStandardLot = 1; // 1 point = 1 EUR/USD pour un lot standard (dépend du courtier)
+                    pipValuePerStandardLot = 1; // 1 point = 1 EUR/USD for a standard lot (depends on broker)
                     break;
                 case 'custom':
                     pipValuePerStandardLot = parseFloat(document.getElementById('customPipValue').value);
                     if (isNaN(pipValuePerStandardLot) || pipValuePerStandardLot <= 0) {
-                        calcErrorMessageDiv.textContent = "Veuillez entrer une valeur de Pip/Point personnalisée valide (> 0).";
+                        calcErrorMessageDiv.textContent = "Please enter a valid custom Pip/Point value (> 0).";
                         calcErrorMessageDiv.classList.add('show');
                         return;
                     }
@@ -651,7 +681,7 @@
 
             const amountToRisk = (capital * riskPercentage) / 100;
             
-            // Calcul de la taille de position en lots
+            // Calculate position size in lots
             const lotSize = amountToRisk / (stopLossPips * pipValuePerStandardLot);
 
             document.getElementById('lotSize').textContent = lotSize.toFixed(2);
@@ -660,61 +690,70 @@
             resultBox.classList.add('show');
         }
 
-        // Fonction pour ajouter une entrée au journal
+        // Function to add a journal entry
         function addJournalEntry() {
             const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
             const newEntry = getJournalFormData();
 
-            if (!newEntry) { // Si la validation a échoué dans getJournalFormData
+            if (!newEntry) { // If validation failed in getJournalFormData
                 journalErrorMessageDiv.classList.add('show');
                 return;
             }
 
-            journalErrorMessageDiv.classList.remove('show'); // Cacher l'erreur si tout est bon
+            journalErrorMessageDiv.classList.remove('show'); // Hide error if all is good
 
-            newEntry.timestamp = new Date().toISOString(); // Horodatage pour le tri
-            journalEntries.unshift(newEntry); // Ajouter la nouvelle entrée au début du tableau
-            saveJournalEntries(); // Sauvegarder les entrées après l'ajout
-            applyFiltersAndSort(); // Ré-appliquer les filtres et le tri pour inclure la nouvelle entrée
-            document.getElementById('journalForm').reset(); // Réinitialiser le formulaire
+            newEntry.timestamp = new Date().toISOString(); // Timestamp for sorting
+            journalEntries.unshift(newEntry); // Add new entry to the beginning of the array
+            saveJournalEntries(); // Save entries after adding
+            applyFiltersAndSort(); // Re-apply filters and sort to include the new entry
+            document.getElementById('journalForm').reset(); // Reset the form
         }
 
-        // Fonction pour mettre à jour une entrée existante du journal
+        // Function to update an existing journal entry
         function updateJournalEntry() {
-            console.log("Début de updateJournalEntry. editingEntryIndex:", editingEntryIndex); // Log de début de mise à jour
+            console.log("Starting updateJournalEntry. editingEntryIndex:", editingEntryIndex); // Update start log
             const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
             const updatedEntry = getJournalFormData();
 
-            if (!updatedEntry) { // Si la validation a échoué
+            if (!updatedEntry) { // If validation failed
                 journalErrorMessageDiv.classList.add('show');
                 return;
             }
 
             journalErrorMessageDiv.classList.remove('show');
 
-            // Mettre à jour l'entrée existante
+            // Update the existing entry
             if (editingEntryIndex !== -1 && journalEntries[editingEntryIndex]) {
                 journalEntries[editingEntryIndex] = {
                     ...updatedEntry,
-                    timestamp: journalEntries[editingEntryIndex].timestamp // Conserver l'horodatage original
+                    timestamp: journalEntries[editingEntryIndex].timestamp // Keep original timestamp
                 };
-                console.log("Entrée mise à jour dans le tableau:", journalEntries[editingEntryIndex]); // Log de l'entrée mise à jour
+                console.log("Entry updated in array:", journalEntries[editingEntryIndex]); // Updated entry log
                 saveJournalEntries();
-                applyFiltersAndSort(); // Ré-appliquer les filtres et le tri pour refléter la modification
+                applyFiltersAndSort(); // Re-apply filters and sort to reflect the modification
             } else {
-                console.error("Erreur: editingEntryIndex invalide ou entrée non trouvée.");
-                journalErrorMessageDiv.textContent = "Erreur lors de la mise à jour de l'entrée.";
+                console.error("Error: invalid editingEntryIndex or entry not found.");
+                journalErrorMessageDiv.textContent = "Error updating entry.";
                 journalErrorMessageDiv.classList.add('show');
             }
 
-            // Réinitialiser le mode édition
+            // Reset edit mode
             resetJournalForm();
         }
 
-        // Fonction pour obtenir les données du formulaire et les valider
+        // Function to get form data and validate it
         function getJournalFormData() {
             const journalDate = document.getElementById('journalDate').value;
-            const journalAsset = document.getElementById('journalAsset').value;
+            const journalAssetSelect = document.getElementById('journalAssetSelect');
+            const journalAssetCustomInput = document.getElementById('journalAssetCustom');
+            let journalAsset;
+
+            if (journalAssetSelect.value === 'other') {
+                journalAsset = journalAssetCustomInput.value;
+            } else {
+                journalAsset = journalAssetSelect.value;
+            }
+
             const journalTradeType = document.getElementById('journalTradeType').value;
             const journalSetup = document.getElementById('journalSetup').value;
             const journalEntryPrice = parseFloat(document.getElementById('journalEntryPrice').value);
@@ -727,13 +766,13 @@
             const journalComment = document.getElementById('journalComment').value;
             const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
 
-            // Validation des champs obligatoires
+            // Validation of required fields
             if (!journalDate || !journalAsset || isNaN(journalEntryPrice) || isNaN(journalSL) || isNaN(journalTP) || isNaN(journalPositionSize) || isNaN(journalResultEuro) || isNaN(journalResultPercentage)) {
-                journalErrorMessageDiv.textContent = "Veuillez remplir tous les champs obligatoires du journal (ceux sans placeholder).";
-                console.log("Validation échouée: champs manquants ou invalides."); // Log de validation
+                journalErrorMessageDiv.textContent = "Please fill in all required journal fields (those without placeholders).";
+                console.log("Validation failed: missing or invalid fields."); // Validation log
                 return null;
             }
-            console.log("Données du formulaire récupérées et validées:", { journalDate, journalAsset, journalEntryPrice, journalResultEuro }); // Log de données validées
+            console.log("Form data retrieved and validated:", { journalDate, journalAsset, journalEntryPrice, journalResultEuro }); // Validated data log
             return {
                 date: journalDate,
                 asset: journalAsset,
@@ -750,12 +789,27 @@
             };
         }
 
-        // Fonction pour charger les données d'une entrée dans le formulaire pour modification
+        // Function to load entry data into the form for editing
         function editJournalEntry(index) {
             const entry = journalEntries[index];
-            console.log("Début de editJournalEntry. Index:", index, "Entrée:", entry); // Log de modification
+            console.log("Starting editJournalEntry. Index:", index, "Entry:", entry); // Edit log
             document.getElementById('journalDate').value = entry.date;
-            document.getElementById('journalAsset').value = entry.asset;
+            
+            const journalAssetSelect = document.getElementById('journalAssetSelect');
+            const journalAssetCustomInput = document.getElementById('journalAssetCustom');
+            const assetOptions = Array.from(journalAssetSelect.options).map(option => option.value);
+
+            if (assetOptions.includes(entry.asset)) {
+                journalAssetSelect.value = entry.asset;
+                journalAssetCustomInput.style.display = 'none';
+                journalAssetCustomInput.removeAttribute('required');
+            } else {
+                journalAssetSelect.value = 'other';
+                journalAssetCustomInput.value = entry.asset;
+                journalAssetCustomInput.style.display = 'block';
+                journalAssetCustomInput.setAttribute('required', 'required');
+            }
+
             document.getElementById('journalTradeType').value = entry.tradeType;
             document.getElementById('journalSetup').value = entry.setup;
             document.getElementById('journalEntryPrice').value = entry.entryPrice;
@@ -767,49 +821,51 @@
             document.getElementById('journalResultPercentage').value = entry.resultPercentage;
             document.getElementById('journalComment').value = entry.comment;
 
-            editingEntryIndex = index; // Définir l'index de l'entrée en cours de modification
-            document.getElementById('addUpdateJournalBtn').textContent = 'Mettre à Jour le Journal';
+            editingEntryIndex = index; // Set the index of the entry being edited
+            document.getElementById('addUpdateJournalBtn').textContent = 'Update Journal';
             document.getElementById('addUpdateJournalBtn').classList.remove('btn-secondary');
-            document.getElementById('addUpdateJournalBtn').classList.add('btn-info'); // Changer la couleur pour indiquer la modification
-            document.getElementById('cancelEditBtn').style.display = 'block'; // Afficher le bouton Annuler
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // Remonter en haut de la page
+            document.getElementById('addUpdateJournalBtn').classList.add('btn-info'); // Change color to indicate modification
+            document.getElementById('cancelEditBtn').style.display = 'block'; // Show Cancel button
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top of page
         }
 
-        // Fonction pour annuler la modification et réinitialiser le formulaire
+        // Function to cancel editing and reset the form
         function cancelEdit() {
-            console.log("Annulation de la modification."); // Log d'annulation
+            console.log("Cancelling edit."); // Cancel log
             resetJournalForm();
         }
 
-        // Fonction pour réinitialiser le formulaire du journal et le mode édition
+        // Function to reset the journal form and edit mode
         function resetJournalForm() {
             document.getElementById('journalForm').reset();
+            document.getElementById('journalAssetCustom').style.display = 'none'; // Hide custom asset input
+            document.getElementById('journalAssetCustom').removeAttribute('required'); // Remove required attribute
             editingEntryIndex = -1;
-            document.getElementById('addUpdateJournalBtn').textContent = 'Ajouter au Journal';
+            document.getElementById('addUpdateJournalBtn').textContent = 'Add to Journal';
             document.getElementById('addUpdateJournalBtn').classList.remove('btn-info');
             document.getElementById('addUpdateJournalBtn').classList.add('btn-secondary');
             document.getElementById('cancelEditBtn').style.display = 'none';
             document.getElementById('journalErrorMessage').classList.remove('show');
-            console.log("Formulaire réinitialisé. editingEntryIndex:", editingEntryIndex); // Log de réinitialisation
+            console.log("Form reset. editingEntryIndex:", editingEntryIndex); // Reset log
         }
 
-        // Fonction pour supprimer une entrée du journal
+        // Function to delete a journal entry
         function deleteJournalEntry(index) {
-            // Utilisation d'un modal personnalisé au lieu de confirm()
-            showCustomConfirm('Êtes-vous sûr de vouloir supprimer cette entrée du journal ?', () => {
-                console.log("Suppression de l'entrée à l'index:", index); // Log de suppression
-                journalEntries.splice(index, 1); // Supprimer l'entrée du tableau
-                saveJournalEntries(); // Sauvegarder les modifications
-                applyFiltersAndSort(); // Ré-appliquer les filtres et le tri après la suppression
-                resetJournalForm(); // Réinitialiser le formulaire au cas où l'entrée supprimée était en cours d'édition
+            // Use a custom confirmation modal instead of confirm()
+            showCustomConfirm('Are you sure you want to delete this journal entry?', () => {
+                console.log("Deleting entry at index:", index); // Delete log
+                journalEntries.splice(index, 1); // Remove entry from array
+                saveJournalEntries(); // Save changes
+                applyFiltersAndSort(); // Re-apply filters and sort after deletion
+                resetJournalForm(); // Reset form in case the deleted entry was being edited
             });
         }
 
-        // Fonction pour appliquer les filtres et le tri, puis rendre le journal
+        // Function to apply filters and sort, then render the journal
         function applyFiltersAndSort() {
-            let filteredEntries = [...journalEntries]; // Copie pour ne pas modifier l'original
+            let filteredEntries = [...journalEntries]; // Copy to avoid modifying the original
 
-            // 1. Filtrage
+            // 1. Filtering
             const filterAsset = document.getElementById('filterAsset').value.toLowerCase();
             const filterTradeType = document.getElementById('filterTradeType').value;
 
@@ -824,7 +880,7 @@
                 );
             }
 
-            // 2. Tri
+            // 2. Sorting
             const sortBy = document.getElementById('sortBy').value;
             const sortOrder = document.getElementById('sortOrder').value;
 
@@ -852,27 +908,27 @@
                 return 0;
             });
 
-            renderFilteredJournalEntries(filteredEntries); // Rendre les entrées filtrées et triées
-            updatePerformanceMetrics(filteredEntries); // Mettre à jour les métriques basées sur les entrées filtrées
-            updateDetailedPerformanceMetrics(filteredEntries); // Mettre à jour les statistiques détaillées et les graphiques
+            renderFilteredJournalEntries(filteredEntries); // Render filtered and sorted entries
+            updatePerformanceMetrics(filteredEntries); // Update metrics based on filtered entries
+            updateDetailedPerformanceMetrics(filteredEntries); // Update detailed statistics and charts
         }
 
-        // Fonction pour réinitialiser les filtres et le tri
+        // Function to reset filters and sort
         function resetFiltersAndSort() {
             document.getElementById('filterAsset').value = '';
             document.getElementById('filterTradeType').value = '';
             document.getElementById('sortBy').value = 'timestamp';
             document.getElementById('sortOrder').value = 'desc';
-            applyFiltersAndSort(); // Appliquer les réglages par défaut
+            applyFiltersAndSort(); // Apply default settings
         }
 
-        // Fonction pour afficher les entrées du journal (filtrées/triées)
+        // Function to display journal entries (filtered/sorted)
         function renderFilteredJournalEntries(entriesToRender) {
-            console.log("Rendu des entrées du journal filtrées/triées. Nombre d'entrées:", entriesToRender.length);
+            console.log("Rendering filtered/sorted journal entries. Number of entries:", entriesToRender.length);
             const journalEntriesContainer = document.getElementById('journalEntriesContainer');
             const noEntriesMessage = document.getElementById('noEntriesMessage'); 
 
-            journalEntriesContainer.innerHTML = ''; // Vider le conteneur
+            journalEntriesContainer.innerHTML = ''; // Clear container
 
             if (entriesToRender.length > 0) {
                 noEntriesMessage.style.display = 'none';
@@ -888,24 +944,24 @@
 
                 entryDiv.innerHTML = `
                     <p><span class="label">Date:</span> <span class="value">${entry.date}</span></p>
-                    <p><span class="label">Actif:</span> <span class="value">${entry.asset}</span> - <span class="value">${entry.tradeType}</span></p>
+                    <p><span class="label">Asset:</span> <span class="value">${entry.asset}</span> - <span class="value">${entry.tradeType}</span></p>
                     <p><span class="label">Setup:</span> <span class="value">${entry.setup || 'N/A'}</span></p>
-                    <p><span class="label">Entrée:</span> <span class="value">${entry.entryPrice}</span> | <span class="label">SL:</span> <span class="value">${entry.stopLoss}</span> | <span class="label">TP:</span> <span class="value">${entry.takeProfit}</span> | <span class="label">RRR:</span> <span class="value">${entry.rrr || 'N/A'}</span></p>
-                    <p><span class="label">Taille de Position:</span> <span class="value">${entry.positionSize} lots</span></p>
-                    <p class="text-lg font-bold ${resultClass}">Résultat: ${entry.resultEuro} € (${entry.resultPercentage}%)</p>
-                    <p><span class="label">Commentaire:</span> <span class="value">${entry.comment || 'Aucun'}</span></p>
+                    <p><span class="label">Entry:</span> <span class="value">${entry.entryPrice}</span> | <span class="label">SL:</span> <span class="value">${entry.stopLoss}</span> | <span class="label">TP:</span> <span class="value">${entry.takeProfit}</span> | <span class="label">RRR:</span> <span class="value">${entry.rrr || 'N/A'}</span></p>
+                    <p><span class="label">Position Size:</span> <span class="value">${entry.positionSize} lots</span></p>
+                    <p class="text-lg font-bold ${resultClass}">Result: ${entry.resultEuro} € (${entry.resultPercentage}%)</p>
+                    <p><span class="label">Comment:</span> <span class="value">${entry.comment || 'None'}</span></p>
                     <div class="journal-actions">
-                        <button onclick="editJournalEntry(${journalEntries.indexOf(entry)})" class="btn-info">Modifier</button>
-                        <button onclick="deleteJournalEntry(${journalEntries.indexOf(entry)})" class="btn-danger">Supprimer</button>
+                        <button onclick="editJournalEntry(${journalEntries.indexOf(entry)})" class="btn-info">Edit</button>
+                        <button onclick="deleteJournalEntry(${journalEntries.indexOf(entry)})" class="btn-danger">Delete</button>
                     </div>
                 `;
                 journalEntriesContainer.appendChild(entryDiv);
             });
         }
 
-        // Fonction pour mettre à jour les statistiques de performance globales
-        function updatePerformanceMetrics(entriesToCalculate) { // Prend en paramètre les entrées à calculer (filtrées ou toutes)
-            console.log("Mise à jour des statistiques de performance globales...");
+        // Function to update global performance statistics
+        function updatePerformanceMetrics(entriesToCalculate) { // Takes entries to calculate (filtered or all)
+            console.log("Updating global performance statistics...");
             const totalTrades = entriesToCalculate.length;
             let winningTrades = 0;
             let losingTrades = 0;
@@ -946,7 +1002,7 @@
             document.getElementById('largestWin').textContent = `${largestWin.toFixed(2)} €`;
             document.getElementById('largestLoss').textContent = `${largestLoss.toFixed(2)} €`;
 
-            // Mettre à jour les couleurs des métriques P&L en fonction du résultat
+            // Update P&L metric colors based on result
             const totalPnLMetric = document.getElementById('totalPnLMetric');
             const totalPnLPercentageMetric = document.getElementById('totalPnLPercentageMetric');
             const avgPnLMetric = document.getElementById('avgPnLMetric');
@@ -958,17 +1014,17 @@
             avgPnLMetric.classList.toggle('positive', parseFloat(avgPnL) > 0);
             avgPnLMetric.classList.toggle('negative', parseFloat(avgPnL) < 0);
 
-            console.log("Statistiques de performance globales mises à jour.");
+            console.log("Global performance statistics updated.");
         }
 
-        // Fonction pour mettre à jour les statistiques de performance détaillées et les graphiques
+        // Function to update detailed performance statistics and charts
         function updateDetailedPerformanceMetrics(entriesToCalculate) {
-            console.log("Mise à jour des statistiques de performance détaillées et des graphiques...");
+            console.log("Updating detailed performance statistics and charts...");
             const performanceByAsset = {};
             const performanceByTradeType = {};
 
             entriesToCalculate.forEach(entry => {
-                // Par Actif
+                // By Asset
                 const asset = entry.asset.toUpperCase();
                 if (!performanceByAsset[asset]) {
                     performanceByAsset[asset] = { totalTrades: 0, winningTrades: 0, totalPnL: 0, totalPnLPercentage: 0 };
@@ -980,7 +1036,7 @@
                 performanceByAsset[asset].totalPnL += entry.resultEuro;
                 performanceByAsset[asset].totalPnLPercentage += entry.resultPercentage;
 
-                // Par Type de Trade
+                // By Trade Type
                 const tradeType = entry.tradeType;
                 if (!performanceByTradeType[tradeType]) {
                     performanceByTradeType[tradeType] = { totalTrades: 0, winningTrades: 0, totalPnL: 0, totalPnLPercentage: 0 };
@@ -993,20 +1049,20 @@
                 performanceByTradeType[tradeType].totalPnLPercentage += entry.resultPercentage;
             });
 
-            // Rendre la performance par actif (tableau)
+            // Render performance by asset (table)
             const assetContainer = document.getElementById('performanceByAssetTable');
             assetContainer.innerHTML = '';
             if (Object.keys(performanceByAsset).length === 0) {
-                assetContainer.innerHTML = '<p class="text-center text-gray-600">Aucune donnée d\'actif disponible.</p>';
+                assetContainer.innerHTML = '<p class="text-center text-gray-600">No asset data available.</p>';
             } else {
                 let assetTableHTML = `
                     <table class="w-full">
                         <thead>
                             <tr>
-                                <th>Actif</th>
+                                <th>Asset</th>
                                 <th>Trades</th>
-                                <th>Gains (€)</th>
-                                <th>Taux Réussite</th>
+                                <th>P&L (€)</th>
+                                <th>Win Rate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1031,11 +1087,11 @@
                 assetContainer.innerHTML = assetTableHTML;
             }
 
-            // Rendre la performance par type de trade (tableau)
+            // Render performance by trade type (table)
             const tradeTypeContainer = document.getElementById('performanceByTradeTypeTable');
             tradeTypeContainer.innerHTML = '';
             if (Object.keys(performanceByTradeType).length === 0) {
-                tradeTypeContainer.innerHTML = '<p class="text-center text-gray-600">Aucune donnée de type de trade disponible.</p>';
+                tradeTypeContainer.innerHTML = '<p class="text-center text-gray-600">No trade type data available.</p>';
             } else {
                 let tradeTypeTableHTML = `
                     <table class="w-full">
@@ -1043,8 +1099,8 @@
                             <tr>
                                 <th>Type</th>
                                 <th>Trades</th>
-                                <th>Gains (€)</th>
-                                <th>Taux Réussite</th>
+                                <th>P&L (€)</th>
+                                <th>Win Rate</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1068,19 +1124,19 @@
                 `;
                 tradeTypeContainer.innerHTML = tradeTypeTableHTML;
             }
-            console.log("Statistiques détaillées mises à jour.");
+            console.log("Detailed statistics updated.");
 
-            // Rendre les graphiques
+            // Render charts
             renderEquityCurveChart(entriesToCalculate);
             renderAssetPerformanceChart(performanceByAsset);
             renderTradeTypePerformanceChart(performanceByTradeType);
         }
 
-        // Fonction pour rendre le graphique de la courbe de capital
+        // Function to render the equity curve chart
         function renderEquityCurveChart(entries) {
             const ctx = document.getElementById('equityCurveChart').getContext('2d');
 
-            // Trier les entrées par date pour la courbe de capital
+            // Sort entries by date for the equity curve
             const sortedEntries = [...entries].sort((a, b) => new Date(a.date) - new Date(b.date));
 
             const labels = [];
@@ -1093,7 +1149,7 @@
                 cumulativePnL.push(currentPnL);
             });
 
-            // Détruire l'ancienne instance de graphique si elle existe
+            // Destroy old chart instance if it exists
             if (equityCurveChartInstance) {
                 equityCurveChartInstance.destroy();
             }
@@ -1103,9 +1159,9 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'P&L Cumulé (€)',
+                        label: 'Cumulative P&L (€)',
                         data: cumulativePnL,
-                        borderColor: '#6366f1', // Bleu violet
+                        borderColor: '#6366f1', // Violet blue
                         backgroundColor: 'rgba(99, 102, 241, 0.2)',
                         fill: true,
                         tension: 0.1
@@ -1116,7 +1172,7 @@
                     maintainAspectRatio: false,
                     plugins: {
                         title: {
-                            display: false, // Titre déjà dans le H3
+                            display: false, // Title already in H3
                         },
                         legend: {
                             display: true,
@@ -1141,16 +1197,16 @@
             });
         }
 
-        // Fonction pour rendre le graphique de performance par actif
+        // Function to render asset performance chart
         function renderAssetPerformanceChart(data) {
             const ctx = document.getElementById('assetPerformanceChart').getContext('2d');
 
             const labels = Object.keys(data);
             const pnLValues = labels.map(label => data[label].totalPnL);
 
-            const backgroundColors = pnLValues.map(value => value >= 0 ? '#10b981' : '#ef4444'); // Vert pour gain, rouge pour perte
+            const backgroundColors = pnLValues.map(value => value >= 0 ? '#10b981' : '#ef4444'); // Green for gain, red for loss
 
-            // Détruire l'ancienne instance de graphique si elle existe
+            // Destroy old chart instance if it exists
             if (assetPerformanceChartInstance) {
                 assetPerformanceChartInstance.destroy();
             }
@@ -1160,10 +1216,10 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'P&L Total (€)',
+                        label: 'Total P&L (€)',
                         data: pnLValues,
                         backgroundColor: backgroundColors,
-                        borderColor: backgroundColors.map(color => color.replace('0.2', '1')), // Bordure pleine
+                        borderColor: backgroundColors.map(color => color.replace('0.2', '1')), // Solid border
                         borderWidth: 1
                     }]
                 },
@@ -1175,14 +1231,14 @@
                             display: false,
                         },
                         legend: {
-                            display: false, // Pas besoin de légende pour une seule série avec couleurs conditionnelles
+                            display: false, // No legend needed for a single series with conditional colors
                         }
                     },
                     scales: {
                         x: {
                             title: {
                                 display: true,
-                                text: 'Actif'
+                                text: 'Asset'
                             }
                         },
                         y: {
@@ -1197,7 +1253,7 @@
             });
         }
 
-        // Fonction pour rendre le graphique de performance par type de trade
+        // Function to render trade type performance chart
         function renderTradeTypePerformanceChart(data) {
             const ctx = document.getElementById('tradeTypePerformanceChart').getContext('2d');
 
@@ -1205,12 +1261,12 @@
             const pnLValues = labels.map(label => data[label].totalPnL);
 
             const backgroundColors = [
-                '#3b82f6', // Bleu pour Achat
-                '#f97316', // Orange pour Vente
-                '#6b7280' // Gris pour autre (si applicable)
-            ]; // Couleurs spécifiques pour les types de trade
+                '#3b82f6', // Blue for Buy
+                '#f97316', // Orange for Sell
+                '#6b7280' // Gray for other (if applicable)
+            ]; // Specific colors for trade types
 
-            // Détruire l'ancienne instance de graphique si elle existe
+            // Destroy old chart instance if it exists
             if (tradeTypePerformanceChartInstance) {
                 tradeTypePerformanceChartInstance.destroy();
             }
@@ -1220,7 +1276,7 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'P&L Total (€)',
+                        label: 'Total P&L (€)',
                         data: pnLValues,
                         backgroundColor: backgroundColors,
                         hoverOffset: 4
@@ -1243,7 +1299,7 @@
         }
 
 
-        // --- Modale de confirmation personnalisée (remplace alert/confirm) ---
+        // --- Custom confirmation modal (replaces alert/confirm) ---
         function showCustomConfirm(message, onConfirm) {
             const modalId = 'customConfirmModal';
             let modal = document.getElementById(modalId);
@@ -1256,8 +1312,8 @@
                     <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
                         <p class="text-lg font-semibold text-gray-800 mb-4" id="customConfirmMessage"></p>
                         <div class="flex justify-end space-x-3">
-                            <button id="confirmCancelBtn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition">Annuler</button>
-                            <button id="confirmOkBtn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Confirmer</button>
+                            <button id="confirmCancelBtn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition">Cancel</button>
+                            <button id="confirmOkBtn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Confirm</button>
                         </div>
                     </div>
                 `;
@@ -1265,12 +1321,12 @@
             }
 
             document.getElementById('customConfirmMessage').textContent = message;
-            modal.style.display = 'flex'; // Afficher la modale
+            modal.style.display = 'flex'; // Show modal
 
             const confirmOkBtn = document.getElementById('confirmOkBtn');
             const confirmCancelBtn = document.getElementById('confirmCancelBtn');
 
-            // Nettoyer les anciens écouteurs d'événements pour éviter les appels multiples
+            // Clean up old event listeners to prevent multiple calls
             const newConfirmOkBtn = confirmOkBtn.cloneNode(true);
             confirmOkBtn.parentNode.replaceChild(newConfirmOkBtn, confirmOkBtn);
             const newConfirmCancelBtn = confirmCancelBtn.cloneNode(true);
@@ -1287,7 +1343,7 @@
                 modal.style.display = 'none';
             });
         }
-        // --- Fin de la modale de confirmation personnalisée ---
+        // --- End of custom confirmation modal ---
     </script>
 </body>
 </html>
