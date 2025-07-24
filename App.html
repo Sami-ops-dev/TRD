@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Trading Tool</title>
+    <title>Trading Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -11,141 +11,151 @@
         /* Inter font for better readability */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f0f4f8; /* Light gray background */
+            background-color: #f8fafc; /* Very light, clean background */
             display: flex;
             justify-content: center;
             align-items: flex-start; /* Align to top for scrolling */
             min-height: 100vh;
-            padding: 20px;
+            padding: 32px; /* More generous overall padding */
         }
         .container {
             background-color: #ffffff;
-            padding: 2.5rem;
-            border-radius: 1rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 4rem; /* Even more generous padding */
+            border-radius: 2rem; /* Significantly more rounded corners */
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1); /* Larger, softer shadow */
             width: 100%;
-            max-width: 1200px; /* Max width for larger screens */
-            border: 1px solid #e2e8f0;
+            max-width: 1200px;
+            border: 1px solid #e2e8f0; /* Subtle border */
         }
         h1 {
-            color: #2d3748;
-            font-size: 2.25rem; /* Larger title font size */
-            font-weight: 700;
-            margin-bottom: 1.5rem;
+            color: #1a202c; /* Darker text for heading */
+            font-size: 3rem; /* Even larger, more impactful title */
+            font-weight: 800; /* Extra bold */
+            margin-bottom: 2rem; /* More space below title */
             text-align: center;
+            letter-spacing: -0.025em; /* Slightly tighter letter spacing */
         }
         h2 {
             color: #2d3748;
-            font-size: 1.875rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
+            font-size: 2.25rem; /* Larger section titles */
+            font-weight: 700;
+            margin-bottom: 1.75rem; /* More space */
             text-align: center;
         }
         h3 {
-            color: #2d3748;
-            font-size: 1.5rem;
+            color: #4a5568;
+            font-size: 1.75rem; /* Slightly larger sub-titles */
             font-weight: 600;
-            margin-bottom: 1rem;
+            margin-bottom: 1.25rem; /* More space */
             text-align: center;
         }
         label {
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.6rem; /* More space */
             color: #4a5568;
             font-weight: 600;
+            font-size: 0.95rem; /* Slightly larger label font */
         }
         input[type="number"], input[type="text"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 0.75rem;
-            margin-bottom: 1.25rem;
-            border: 1px solid #cbd5e0;
-            border-radius: 0.5rem;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            padding: 1rem; /* More padding for inputs */
+            margin-bottom: 1.5rem; /* More space below inputs */
+            border: 1px solid #cbd5e0; /* Softer border */
+            border-radius: 0.75rem; /* More rounded */
+            box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06); /* More pronounced inner shadow */
+            transition: all 0.25s ease-out; /* Smoother transition */
         }
         input[type="number"]:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #7f58af; /* Revolut-like purple */
+            box-shadow: 0 0 0 5px rgba(127, 88, 175, 0.25); /* Larger, softer focus ring */
             outline: none;
         }
         button {
             width: 100%;
-            padding: 0.875rem 1.25rem;
+            padding: 1.125rem 1.75rem; /* More padding for buttons */
             color: white;
             font-weight: 700;
-            border-radius: 0.75rem;
+            border-radius: 1rem; /* More rounded */
             border: none;
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease-out; /* Smoother transition */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            letter-spacing: 0.025em; /* Slightly wider letter spacing */
         }
         button:hover {
-            transform: translateY(-2px);
+            transform: translateY(-4px); /* More noticeable lift */
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15); /* Even larger shadow on hover */
         }
         button:active {
             transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #6366f1; /* Violet blue */
+            background-color: #7f58af; /* Revolut-like purple */
         }
         .btn-primary:hover {
-            background-color: #4f46e5;
+            background-color: #6c4e95; /* Darker purple on hover */
         }
         .btn-secondary {
-            background-color: #22c55e; /* Green */
+            background-color: #48bb78; /* Brighter green */
         }
         .btn-secondary:hover {
-            background-color: #16a34a;
+            background-color: #38a169;
         }
         .btn-danger {
-            background-color: #ef4444; /* Red */
+            background-color: #f56565; /* Brighter red */
         }
         .btn-danger:hover {
-            background-color: #dc2626;
+            background-color: #e53e3e;
         }
         .btn-info {
-            background-color: #3b82f6; /* Blue */
+            background-color: #4299e1; /* Brighter info blue */
         }
         .btn-info:hover {
-            background-color: #2563eb;
+            background-color: #3182ce;
         }
         .result-box {
-            background-color: #e0f2fe;
-            padding: 1.5rem;
-            border-radius: 0.75rem;
-            margin-top: 1.5rem;
+            background-color: #e0f2fe; /* Lighter blue */
+            padding: 1.75rem; /* More padding */
+            border-radius: 1rem; /* More rounded */
+            margin-top: 1.75rem; /* More margin */
             border: 1px solid #90cdf4;
             color: #2c5282;
             font-weight: 600;
             text-align: center;
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.08); /* More pronounced inner shadow */
             display: none;
         }
         .result-box.show {
             display: block;
         }
         .error-message {
-            color: #e53e3e;
+            color: #c53030; /* Darker red for errors */
             background-color: #fed7d7;
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.25rem;
+            padding: 1rem; /* More padding */
+            border-radius: 0.75rem; /* More rounded */
+            margin-bottom: 1.5rem; /* More space */
             text-align: center;
+            font-weight: 600;
             display: none;
         }
         .error-message.show {
             display: block;
         }
         .journal-entry {
-            background-color: #f8fafc; /* Very light blue-gray */
-            padding: 1rem;
-            border-radius: 0.75rem;
+            background-color: #f7fafc; /* Very light blue-gray */
+            padding: 1.5rem; /* More padding */
+            border-radius: 1rem; /* More rounded */
             border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            position: relative; /* For positioning buttons */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            position: relative;
+            transition: transform 0.2s ease-out;
+        }
+        .journal-entry:hover {
+            transform: translateY(-3px); /* More noticeable lift */
         }
         .journal-entry p {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem; /* More space */
         }
         .journal-entry .label {
             font-weight: 600;
@@ -164,39 +174,41 @@
         }
         .journal-actions {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 1rem;
-            justify-content: flex-end; /* Align buttons to the right */
+            gap: 0.85rem; /* More space between buttons */
+            margin-top: 1.25rem; /* More space */
+            justify-content: flex-end;
         }
         .journal-actions button {
-            width: auto; /* Buttons don't take full width */
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-            border-radius: 0.5rem;
-            box-shadow: none; /* No extra shadow for small buttons */
+            width: auto;
+            padding: 0.75rem 1.5rem; /* Adjusted padding */
+            font-size: 1rem; /* Slightly larger font */
+            border-radius: 0.75rem; /* More rounded */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for action buttons */
         }
         .journal-actions button:hover {
-            transform: none; /* No lift effect for small buttons */
-        }
-        .journal-actions button:active {
-            transform: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         /* Styles for performance dashboard */
         .performance-metric {
-            background-color: #e0f2fe; /* Light blue */
-            padding: 1rem;
-            border-radius: 0.75rem;
+            background-color: #ebf8ff; /* Lighter blue */
+            padding: 1.5rem; /* More padding */
+            border-radius: 1rem;
             text-align: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            transition: transform 0.2s ease-out;
+        }
+        .performance-metric:hover {
+            transform: translateY(-3px);
         }
         .performance-metric p {
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.35rem;
             color: #4a5568;
         }
         .performance-metric .value {
-            font-size: 1.75rem; /* Larger font size */
+            font-size: 2rem; /* Larger font size */
             font-weight: 700;
-            color: #1d4ed8; /* Dark blue */
+            color: #2b6cb0; /* Darker blue */
         }
         .performance-metric.positive .value {
             color: #10b981; /* Green for gains */
@@ -205,32 +217,36 @@
             color: #ef4444; /* Red for losses */
         }
         .detailed-stats-card {
-            background-color: #f8fafc;
-            padding: 1rem;
-            border-radius: 0.75rem;
+            background-color: #f7fafc; /* Lighter background */
+            padding: 2rem; /* More padding */
+            border-radius: 1.25rem; /* More rounded */
             border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            margin-bottom: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
+            margin-bottom: 2rem; /* More margin */
+            transition: transform 0.2s ease-out;
+        }
+        .detailed-stats-card:hover {
+            transform: translateY(-3px);
         }
         .detailed-stats-card h4 {
-            font-size: 1.25rem;
-            font-weight: 600;
+            font-size: 1.5rem; /* Slightly larger */
+            font-weight: 700;
             color: #2d3748;
-            margin-bottom: 0.75rem;
+            margin-bottom: 1.25rem; /* More margin */
             text-align: center;
         }
         .detailed-stats-card table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
         }
         .detailed-stats-card th, .detailed-stats-card td {
-            padding: 0.5rem;
+            padding: 0.75rem 1rem; /* More padding */
             border: 1px solid #e2e8f0;
             text-align: left;
         }
         .detailed-stats-card th {
-            background-color: #edf2f7;
+            background-color: #e2e8f0; /* Slightly darker header */
             font-weight: 600;
             color: #4a5568;
         }
@@ -238,7 +254,7 @@
             color: #2d3748;
         }
         .detailed-stats-card tr:nth-child(even) {
-            background-color: #f7fafc;
+            background-color: #edf2f7; /* Slightly darker even rows */
         }
         .detailed-stats-card .positive-text {
             color: #10b981;
@@ -251,9 +267,13 @@
         /* Specific styles for chart containers */
         .chart-container {
             position: relative;
-            height: 300px; /* Fixed height for charts */
+            height: 350px; /* Increased height for charts */
             width: 100%;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem; /* More margin */
+            border: 1px solid #cbd5e0;
+            border-radius: 1rem; /* More rounded */
+            background-color: #ffffff;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
         }
         /* Ensure tables are scrollable on smaller screens */
         .overflow-x-auto {
@@ -263,8 +283,8 @@
         .session-status-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
-            gap: 0.5rem;
-            margin-top: 1rem;
+            gap: 1rem; /* Increased gap */
+            margin-top: 2rem; /* More margin */
         }
         @media (min-width: 640px) { /* sm breakpoint */
             .session-status-grid {
@@ -275,28 +295,34 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            background-color: #f0f4f8;
-            font-size: 0.875rem;
+            padding: 1rem; /* More padding */
+            border-radius: 0.85rem; /* More rounded */
+            background-color: #f7fafc; /* Lighter background */
+            font-size: 1rem; /* Slightly larger font */
             color: #4a5568;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            transition: transform 0.15s ease-out;
+        }
+        .session-item:hover {
+            transform: translateY(-2px);
         }
         .session-item .status-indicator {
-            width: 12px;
-            height: 12px;
+            width: 16px; /* Larger indicator */
+            height: 16px;
             border-radius: 50%;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.4rem; /* More space */
+            border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
         }
         .session-item.open .status-indicator {
-            background-color: #22c55e; /* Green for open */
+            background-color: #48bb78; /* Brighter green for open */
         }
         .session-item.closed .status-indicator {
-            background-color: #ef4444; /* Red for closed */
+            background-color: #f56565; /* Brighter red for closed */
         }
         /* Styles for the session overlap chart */
-        #tradingSessionsChartCanvas { /* Changed ID */
+        #tradingSessionsChartCanvas {
             border: 1px solid #cbd5e0;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem; /* More rounded */
             background-color: #ffffff;
         }
 
@@ -304,31 +330,35 @@
         .goal-progress-bar-container {
             width: 100%;
             background-color: #e2e8f0;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem; /* More rounded */
             overflow: hidden;
-            margin-top: 1rem;
+            margin-top: 1.5rem; /* More margin */
         }
         .goal-progress-bar {
-            height: 20px;
-            background-color: #3b82f6; /* Blue */
+            height: 28px; /* Taller bar */
+            background-color: #7f58af; /* Revolut-like purple */
             width: 0%;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             text-align: center;
             color: white;
-            font-weight: 600;
-            line-height: 20px;
-            transition: width 0.5s ease-in-out;
+            font-weight: 700;
+            line-height: 28px;
+            transition: width 0.5s ease-out, background-color 0.3s ease-out;
+            font-size: 0.95rem; /* Slightly larger font */
         }
         .goal-progress-bar.achieved {
-            background-color: #10b981; /* Green when achieved */
+            background-color: #48bb78; /* Brighter green when achieved */
+        }
+        .goal-progress-bar-container + .result-box {
+            margin-top: 1rem; /* Closer to the bar */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="text-center mb-8">
-            <h1 class="text-indigo-700 mb-2">My Simple Trading Tool</h1>
-            <p class="text-gray-600">Manage your risk and track your performance.</p>
+        <header class="text-center mb-10"> <!-- More margin bottom -->
+            <h1 class="text-indigo-700 mb-4">Trading Tool</h1> <!-- More margin bottom -->
+            <p class="text-gray-600 text-lg">Manage your risk and track your performance.</p> <!-- Larger text -->
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -445,7 +475,6 @@
                         <p class="text-xs text-gray-600 mt-2">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
                     </div>
                 </div>
-
 
                 <!-- Trading Session Status -->
                 <h3 class="text-gray-800 mb-4 mt-8">Trading Session Status (UTC)</h3>
@@ -675,6 +704,7 @@
         let equityCurveChartInstance = null;
         let assetPerformanceChartInstance = null;
         let tradeTypePerformanceChartInstance = null;
+        let dailyPnLEvolutionChartInstance = null; // Global instance for daily P&L chart
         let tradingSessionsChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -740,6 +770,7 @@
             updateTradingSessionStatus(); 
             renderTradingSessionsChart(); 
             updatePerformanceGoalDisplay(); // Update goal display on load
+            renderDailyPnLEvolutionChart(); // Initial render of daily P&L chart
 
             // Set intervals for dynamic updates
             setInterval(() => {
@@ -818,20 +849,6 @@
             updatePerformanceGoalDisplay();
             goalErrorMessageDiv.classList.remove('show');
         }
-
-        // Function to initialize Target P&L from Current P&L (Removed as per user request)
-        // function initializeTargetFromCurrentPnL() {
-        //     const totalPnLText = document.getElementById('totalPnL').textContent;
-        //     const currentTotalPnL = parseFloat(totalPnLText.replace(' €', '')); // Remove ' €' and parse
-            
-        //     if (!isNaN(currentTotalPnL)) {
-        //         document.getElementById('targetPnLEuro').value = currentTotalPnL.toFixed(2);
-        //         setPerformanceGoal();
-        //     } else {
-        //         document.getElementById('goalTrackerErrorMessage').textContent = "Cannot set target from current P&L: No valid P&L data.";
-        //         document.getElementById('goalTrackerErrorMessage').classList.add('show');
-        //     }
-        // }
 
         // Function to update the display of the performance goal progress
         function updatePerformanceGoalDisplay() {
@@ -964,6 +981,7 @@
             saveJournalEntries(); // Save entries after adding
             applyFiltersAndSort(); // Re-apply filters and sort to include the new entry
             updatePerformanceGoalDisplay(); // Update goal display after new trade
+            renderDailyPnLEvolutionChart(); // Update daily P&L chart after new trade
             document.getElementById('journalForm').reset(); // Reset the form
         }
 
@@ -990,6 +1008,7 @@
                 saveJournalEntries();
                 applyFiltersAndSort(); // Re-apply filters and sort to reflect the modification
                 updatePerformanceGoalDisplay(); // Update goal display after trade update
+                renderDailyPnLEvolutionChart(); // Update daily P&L chart after trade update
             } else {
                 console.error("Error: invalid editingEntryIndex or entry not found.");
                 journalErrorMessageDiv.textContent = "Error updating entry.";
@@ -1117,6 +1136,7 @@
                 saveJournalEntries(); // Save changes
                 applyFiltersAndSort(); // Re-apply filters and sort after deletion
                 updatePerformanceGoalDisplay(); // Update goal display after trade deletion
+                renderDailyPnLEvolutionChart(); // Update daily P&L chart after deletion
                 resetJournalForm(); // Reset form in case the deleted entry was being edited
             });
         }
