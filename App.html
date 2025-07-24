@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Outil de Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Police Inter pour une meilleure lisibilité */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Un gris clair pour le fond */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Aligner en haut pour le défilement */
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 1200px; /* Largeur max pour les grands écrans */
+            border: 1px solid #e2e8f0;
+        }
+        h1 {
+            color: #2d3748;
+            font-size: 2.25rem; /* Plus grand titre */
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        h2 {
+            color: #2d3748;
+            font-size: 1.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        h3 {
+            color: #2d3748;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 600;
+        }
+        input[type="number"], input[type="text"], input[type="date"], select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid #cbd5e0;
+            border-radius: 0.5rem;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        input[type="number"]:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 0.875rem 1.25rem;
+            color: white;
+            font-weight: 700;
+            border-radius: 0.75rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        button:hover {
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background-color: #6366f1; /* Bleu violet */
+        }
+        .btn-primary:hover {
+            background-color: #4f46e5;
+        }
+        .btn-secondary {
+            background-color: #22c55e; /* Vert */
+        }
+        .btn-secondary:hover {
+            background-color: #16a34a;
+        }
+        .btn-danger {
+            background-color: #ef4444; /* Rouge */
+        }
+        .btn-danger:hover {
+            background-color: #dc2626;
+        }
+        .btn-info {
+            background-color: #3b82f6; /* Bleu */
+        }
+        .btn-info:hover {
+            background-color: #2563eb;
+        }
+        .result-box {
+            background-color: #e0f2fe;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1.5rem;
+            border: 1px solid #90cdf4;
+            color: #2c5282;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+        .result-box.show {
+            display: block;
+        }
+        .error-message {
+            color: #e53e3e;
+            background-color: #fed7d7;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.25rem;
+            text-align: center;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        .journal-entry {
+            background-color: #f8fafc; /* Très léger gris bleu */
+            padding: 1rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            position: relative; /* Pour positionner les boutons */
+        }
+        .journal-entry p {
+            margin-bottom: 0.25rem;
+        }
+        .journal-entry .label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        .journal-entry .value {
+            color: #2d3748;
+        }
+        .journal-entry .result-positive {
+            color: #10b981; /* Vert émeraude */
+            font-weight: 700;
+        }
+        .journal-entry .result-negative {
+            color: #ef4444; /* Rouge */
+            font-weight: 700;
+        }
+        .journal-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            justify-content: flex-end; /* Aligner les boutons à droite */
+        }
+        .journal-actions button {
+            width: auto; /* Les boutons ne prennent pas toute la largeur */
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 0.5rem;
+            box-shadow: none; /* Pas d'ombre supplémentaire pour les petits boutons */
+        }
+        .journal-actions button:hover {
+            transform: none; /* Pas d'effet de soulèvement pour les petits boutons */
+        }
+        .journal-actions button:active {
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="text-center mb-8">
+            <h1 class="text-indigo-700 mb-2">Mon Outil de Trading</h1>
+            <p class="text-gray-600">Gérez votre risque et suivez vos performances.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Calculateur de Taille de Position -->
+            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-gray-800 mb-6">Calculateur de Taille de Position</h2>
+                <div id="calcErrorMessage" class="error-message"></div>
+                <div class="space-y-4">
+                    <div>
+                        <label for="capital">Capital du Compte (€) :</label>
+                        <input type="number" id="capital" value="10000" min="1" step="any">
+                    </div>
+                    <div>
+                        <label for="riskPercentage">Pourcentage de Risque par Trade (%) :</label>
+                        <input type="number" id="riskPercentage" value="1" min="0.1" max="10" step="0.1">
+                    </div>
+                    <div>
+                        <label for="stopLossPips">Stop Loss (en Pips) :</label>
+                        <input type="number" id="stopLossPips" value="20" min="1" step="any">
+                    </div>
+                    <div>
+                        <label for="currencyPair">Paire de Devises / Actif :</label>
+                        <select id="currencyPair">
+                            <option value="EURUSD">EUR/USD</option>
+                            <option value="GBPUSD">GBP/USD</option>
+                            <option value="USDJPY">USD/JPY</option>
+                            <option value="AUDUSD">AUD/USD</option>
+                            <option value="USDCAD">USD/CAD</option>
+                            <option value="USDCHF">USD/CHF</option>
+                            <option value="NZDUSD">NZD/USD</option>
+                            <option value="EURJPY">EUR/JPY</option>
+                            <option value="GBPJPY">GBP/JPY</option>
+                            <option value="XAUUSD">Or (XAU/USD)</option>
+                            <option value="DAX40">DAX 40 (Allemagne)</option>
+                            <option value="SP500">S&P 500 (USA)</option>
+                            <option value="NASDAQ100">NASDAQ 100 (USA)</option>
+                            <option value="CAC40">CAC 40 (France)</option>
+                            <option value="custom">Autre (entrer la valeur du pip)</option>
+                        </select>
+                    </div>
+                    <div id="customPipValueContainer" style="display: none;">
+                        <label for="customPipValue">Valeur du Pip/Point par Lot Standard (€) :</label>
+                        <input type="number" id="customPipValue" value="10" min="0.01" step="any">
+                    </div>
+                    <button onclick="calculatePositionSize()" class="btn-primary">Calculer la Taille de Position</button>
+                    <div id="resultBox" class="result-box">
+                        <p>Taille de Position Recommandée : <span id="lotSize"></span> lots</p>
+                        <p>Valeur du Pip/Point : <span id="pipValueDisplay"></span> €</p>
+                        <p>Montant Risqué : <span id="amountRisqued"></span> €</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Journal de Trading -->
+            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-gray-800 mb-6">Journal de Trading</h2>
+                <div id="journalErrorMessage" class="error-message"></div>
+                <form id="journalForm" class="space-y-4 mb-8">
+                    <div>
+                        <label for="journalDate">Date :</label>
+                        <input type="date" id="journalDate" required>
+                    </div>
+                    <div>
+                        <label for="journalAsset">Actif :</label>
+                        <input type="text" id="journalAsset" placeholder="Ex: EUR/USD, DAX40, AAPL" required>
+                    </div>
+                    <div>
+                        <label for="journalTradeType">Type de Trade :</label>
+                        <select id="journalTradeType">
+                            <option value="Achat">Achat (Long)</option>
+                            <option value="Vente">Vente (Short)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="journalSetup">Setup :</label>
+                        <input type="text" id="journalSetup" placeholder="Ex: Rupture de résistance, Rejet MVA">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                            <label for="journalEntryPrice">Entrée :</label>
+                            <input type="number" id="journalEntryPrice" step="any" required>
+                        </div>
+                        <div>
+                            <label for="journalSL">SL :</label>
+                            <input type="number" id="journalSL" step="any" required>
+                        </div>
+                        <div>
+                            <label for="journalTP">TP :</label>
+                            <input type="number" id="journalTP" step="any" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="journalRRR">RRR (Ex: 1:2) :</label>
+                        <input type="text" id="journalRRR" placeholder="Ex: 1:2">
+                    </div>
+                    <div>
+                        <label for="journalPositionSize">Taille de Position :</label>
+                        <input type="number" id="journalPositionSize" step="any" required>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="journalResultEuro">Résultat (€) :</label>
+                            <input type="number" id="journalResultEuro" step="any" required>
+                        </div>
+                        <div>
+                            <label for="journalResultPercentage">Résultat (%) :</label>
+                            <input type="number" id="journalResultPercentage" step="any" required>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="journalComment">Commentaire / Émotion :</label>
+                        <textarea id="journalComment" rows="3" placeholder="Notes sur le trade, émotions ressenties..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-secondary" id="addUpdateJournalBtn">Ajouter au Journal</button>
+                    <button type="button" class="btn-info" id="cancelEditBtn" style="display:none;">Annuler la Modification</button>
+                </form>
+
+                <h3 class="text-gray-800 mb-4 mt-8">Mes Entrées de Journal</h3>
+                <!-- Moved noEntriesMessage outside journalEntriesContainer -->
+                <p class="text-center text-gray-600" id="noEntriesMessage">Aucune entrée de journal pour le moment. Ajoutez votre premier trade !</p>
+                <div id="journalEntriesContainer" class="space-y-4">
+                    <!-- Les entrées du journal seront ajoutées ici par JavaScript -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Clé pour le stockage local
+        const LOCAL_STORAGE_KEY = 'tradingJournalEntries';
+
+        // Tableau pour stocker les entrées du journal
+        let journalEntries = [];
+        // Variable pour stocker l'index de l'entrée en cours de modification
+        let editingEntryIndex = -1; 
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Logique pour afficher/masquer le champ de valeur de pip personnalisé
+            const currencyPairSelect = document.getElementById('currencyPair');
+            const customPipValueContainer = document.getElementById('customPipValueContainer');
+            currencyPairSelect.addEventListener('change', function() {
+                if (this.value === 'custom') {
+                    customPipValueContainer.style.display = 'block';
+                } else {
+                    customPipValueContainer.style.display = 'none';
+                }
+            });
+
+            // Gérer la soumission du formulaire du journal
+            const journalForm = document.getElementById('journalForm');
+            journalForm.addEventListener('submit', function(event) {
+                event.preventDefault(); // Empêcher le rechargement de la page
+                if (editingEntryIndex === -1) {
+                    addJournalEntry();
+                } else {
+                    updateJournalEntry();
+                }
+            });
+
+            // Gérer le bouton Annuler la Modification
+            document.getElementById('cancelEditBtn').addEventListener('click', cancelEdit);
+
+            // Charger les entrées depuis le stockage local au chargement de la page
+            loadJournalEntries();
+            renderJournalEntries(); // Afficher les entrées chargées
+        });
+
+        // Fonction pour sauvegarder les entrées dans le stockage local
+        function saveJournalEntries() {
+            console.log("Sauvegarde des entrées:", journalEntries); // Log de sauvegarde
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(journalEntries));
+        }
+
+        // Fonction pour charger les entrées depuis le stockage local
+        function loadJournalEntries() {
+            const storedEntries = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (storedEntries) {
+                journalEntries = JSON.parse(storedEntries);
+                console.log("Entrées chargées:", journalEntries); // Log de chargement
+                // Assurez-vous que les timestamps sont des objets Date pour le tri si nécessaire
+                journalEntries.forEach(entry => {
+                    if (typeof entry.timestamp === 'string') {
+                        entry.timestamp = new Date(entry.timestamp);
+                    }
+                });
+                // Trier par timestamp du plus récent au plus ancien
+                journalEntries.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime());
+            }
+        }
+
+        // Fonction pour calculer la taille de position
+        function calculatePositionSize() {
+            const capital = parseFloat(document.getElementById('capital').value);
+            const riskPercentage = parseFloat(document.getElementById('riskPercentage').value);
+            const stopLossPips = parseFloat(document.getElementById('stopLossPips').value);
+            const currencyPair = document.getElementById('currencyPair').value;
+            const calcErrorMessageDiv = document.getElementById('calcErrorMessage');
+            const resultBox = document.getElementById('resultBox');
+
+            // Cacher les messages et résultats précédents
+            calcErrorMessageDiv.classList.remove('show');
+            resultBox.classList.remove('show');
+
+            // Validation des entrées
+            if (isNaN(capital) || capital <= 0) {
+                calcErrorMessageDiv.textContent = "Veuillez entrer un capital valide (> 0).";
+                calcErrorMessageDiv.classList.add('show');
+                return;
+            }
+            if (isNaN(riskPercentage) || riskPercentage <= 0 || riskPercentage > 100) {
+                calcErrorMessageDiv.textContent = "Veuillez entrer un pourcentage de risque valide (entre 0.1 et 100).";
+                calcErrorMessageDiv.classList.add('show');
+                return;
+            }
+            if (isNaN(stopLossPips) || stopLossPips <= 0) {
+                calcErrorMessageDiv.textContent = "Veuillez entrer une valeur de Stop Loss valide (> 0).";
+                calcErrorMessageDiv.classList.add('show');
+                return;
+            }
+
+            let pipValuePerStandardLot; // Valeur du pip pour un lot standard (100 000 unités) en EUR
+            
+            // Définir la valeur du pip par lot standard en fonction de la paire
+            // Ces valeurs sont des approximations pour un compte en EUR.
+            // Pour les paires en USD/JPY, la valeur est pour 100 000 unités de base (USD).
+            // Pour les indices, la valeur est par point.
+            switch (currencyPair) {
+                case 'EURUSD':
+                case 'GBPUSD':
+                case 'AUDUSD':
+                case 'NZDUSD':
+                    pipValuePerStandardLot = 10; // 1 pip = 10 USD pour un lot standard, converti en EUR si le compte est en EUR
+                    break;
+                case 'USDJPY':
+                    pipValuePerStandardLot = 8.5; // Approximation, dépend du taux de change USD/JPY et EUR/USD
+                    break;
+                case 'USDCAD':
+                case 'USDCHF':
+                    pipValuePerStandardLot = 10; // 1 pip = 10 USD pour un lot standard, converti en EUR
+                    break;
+                case 'EURJPY':
+                case 'GBPJPY':
+                    pipValuePerStandardLot = 8.5; // Approximation, dépend du taux de change JPY/EUR
+                    break;
+                case 'XAUUSD': // Or
+                    pipValuePerStandardLot = 10; // 1 point = 10 USD pour un lot standard (100 onces), converti en EUR
+                    break;
+                case 'DAX40': // DAX 40
+                case 'SP500': // S&P 500
+                case 'NASDAQ100': // NASDAQ 100
+                case 'CAC40': // CAC 40
+                    pipValuePerStandardLot = 1; // 1 point = 1 EUR/USD pour un lot standard (dépend du courtier)
+                    break;
+                case 'custom':
+                    pipValuePerStandardLot = parseFloat(document.getElementById('customPipValue').value);
+                    if (isNaN(pipValuePerStandardLot) || pipValuePerStandardLot <= 0) {
+                        calcErrorMessageDiv.textContent = "Veuillez entrer une valeur de Pip/Point personnalisée valide (> 0).";
+                        calcErrorMessageDiv.classList.add('show');
+                        return;
+                    }
+                    break;
+                default:
+                    pipValuePerStandardLot = 10;
+                    break;
+            }
+
+            const amountToRisk = (capital * riskPercentage) / 100;
+            
+            // Calcul de la taille de position en lots
+            const lotSize = amountToRisk / (stopLossPips * pipValuePerStandardLot);
+
+            document.getElementById('lotSize').textContent = lotSize.toFixed(2);
+            document.getElementById('pipValueDisplay').textContent = pipValuePerStandardLot.toFixed(2);
+            document.getElementById('amountRisqued').textContent = amountToRisk.toFixed(2);
+            resultBox.classList.add('show');
+        }
+
+        // Fonction pour ajouter une entrée au journal
+        function addJournalEntry() {
+            const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
+            const newEntry = getJournalFormData();
+
+            if (!newEntry) { // Si la validation a échoué dans getJournalFormData
+                journalErrorMessageDiv.classList.add('show');
+                return;
+            }
+
+            journalErrorMessageDiv.classList.remove('show'); // Cacher l'erreur si tout est bon
+
+            newEntry.timestamp = new Date().toISOString(); // Horodatage pour le tri
+            journalEntries.unshift(newEntry); // Ajouter la nouvelle entrée au début du tableau
+            saveJournalEntries(); // Sauvegarder les entrées après l'ajout
+            renderJournalEntries(); // Mettre à jour l'affichage
+
+            // Réinitialiser le formulaire
+            document.getElementById('journalForm').reset();
+        }
+
+        // Fonction pour mettre à jour une entrée existante du journal
+        function updateJournalEntry() {
+            console.log("Début de updateJournalEntry. editingEntryIndex:", editingEntryIndex); // Log de début de mise à jour
+            const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
+            const updatedEntry = getJournalFormData();
+
+            if (!updatedEntry) { // Si la validation a échoué
+                journalErrorMessageDiv.classList.add('show');
+                return;
+            }
+
+            journalErrorMessageDiv.classList.remove('show');
+
+            // Mettre à jour l'entrée existante
+            if (editingEntryIndex !== -1 && journalEntries[editingEntryIndex]) {
+                journalEntries[editingEntryIndex] = {
+                    ...updatedEntry,
+                    timestamp: journalEntries[editingEntryIndex].timestamp // Conserver l'horodatage original
+                };
+                console.log("Entrée mise à jour dans le tableau:", journalEntries[editingEntryIndex]); // Log de l'entrée mise à jour
+                saveJournalEntries();
+                renderJournalEntries();
+            } else {
+                console.error("Erreur: editingEntryIndex invalide ou entrée non trouvée.");
+                journalErrorMessageDiv.textContent = "Erreur lors de la mise à jour de l'entrée.";
+                journalErrorMessageDiv.classList.add('show');
+            }
+
+            // Réinitialiser le mode édition
+            resetJournalForm();
+        }
+
+        // Fonction pour obtenir les données du formulaire et les valider
+        function getJournalFormData() {
+            const journalDate = document.getElementById('journalDate').value;
+            const journalAsset = document.getElementById('journalAsset').value;
+            const journalTradeType = document.getElementById('journalTradeType').value;
+            const journalSetup = document.getElementById('journalSetup').value;
+            const journalEntryPrice = parseFloat(document.getElementById('journalEntryPrice').value);
+            const journalSL = parseFloat(document.getElementById('journalSL').value);
+            const journalTP = parseFloat(document.getElementById('journalTP').value);
+            const journalRRR = document.getElementById('journalRRR').value;
+            const journalPositionSize = parseFloat(document.getElementById('journalPositionSize').value);
+            const journalResultEuro = parseFloat(document.getElementById('journalResultEuro').value);
+            const journalResultPercentage = parseFloat(document.getElementById('journalResultPercentage').value);
+            const journalComment = document.getElementById('journalComment').value;
+            const journalErrorMessageDiv = document.getElementById('journalErrorMessage');
+
+            // Validation des champs obligatoires
+            if (!journalDate || !journalAsset || isNaN(journalEntryPrice) || isNaN(journalSL) || isNaN(journalTP) || isNaN(journalPositionSize) || isNaN(journalResultEuro) || isNaN(journalResultPercentage)) {
+                journalErrorMessageDiv.textContent = "Veuillez remplir tous les champs obligatoires du journal (ceux sans placeholder).";
+                console.log("Validation échouée: champs manquants ou invalides."); // Log de validation
+                return null;
+            }
+            console.log("Données du formulaire récupérées et validées:", { journalDate, journalAsset, journalEntryPrice, journalResultEuro }); // Log de données validées
+            return {
+                date: journalDate,
+                asset: journalAsset,
+                tradeType: journalTradeType,
+                setup: journalSetup,
+                entryPrice: journalEntryPrice,
+                stopLoss: journalSL,
+                takeProfit: journalTP,
+                rrr: journalRRR,
+                positionSize: journalPositionSize,
+                resultEuro: journalResultEuro,
+                resultPercentage: journalResultPercentage,
+                comment: journalComment
+            };
+        }
+
+        // Fonction pour charger les données d'une entrée dans le formulaire pour modification
+        function editJournalEntry(index) {
+            const entry = journalEntries[index];
+            console.log("Début de editJournalEntry. Index:", index, "Entrée:", entry); // Log de modification
+            document.getElementById('journalDate').value = entry.date;
+            document.getElementById('journalAsset').value = entry.asset;
+            document.getElementById('journalTradeType').value = entry.tradeType;
+            document.getElementById('journalSetup').value = entry.setup;
+            document.getElementById('journalEntryPrice').value = entry.entryPrice;
+            document.getElementById('journalSL').value = entry.stopLoss;
+            document.getElementById('journalTP').value = entry.takeProfit;
+            document.getElementById('journalRRR').value = entry.rrr;
+            document.getElementById('journalPositionSize').value = entry.positionSize;
+            document.getElementById('journalResultEuro').value = entry.resultEuro;
+            document.getElementById('journalResultPercentage').value = entry.resultPercentage;
+            document.getElementById('journalComment').value = entry.comment;
+
+            editingEntryIndex = index; // Définir l'index de l'entrée en cours de modification
+            document.getElementById('addUpdateJournalBtn').textContent = 'Mettre à Jour le Journal';
+            document.getElementById('addUpdateJournalBtn').classList.remove('btn-secondary');
+            document.getElementById('addUpdateJournalBtn').classList.add('btn-info'); // Changer la couleur pour indiquer la modification
+            document.getElementById('cancelEditBtn').style.display = 'block'; // Afficher le bouton Annuler
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // Remonter en haut de la page
+        }
+
+        // Fonction pour annuler la modification et réinitialiser le formulaire
+        function cancelEdit() {
+            console.log("Annulation de la modification."); // Log d'annulation
+            resetJournalForm();
+        }
+
+        // Fonction pour réinitialiser le formulaire du journal et le mode édition
+        function resetJournalForm() {
+            document.getElementById('journalForm').reset();
+            editingEntryIndex = -1;
+            document.getElementById('addUpdateJournalBtn').textContent = 'Ajouter au Journal';
+            document.getElementById('addUpdateJournalBtn').classList.remove('btn-info');
+            document.getElementById('addUpdateJournalBtn').classList.add('btn-secondary');
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('journalErrorMessage').classList.remove('show');
+            console.log("Formulaire réinitialisé. editingEntryIndex:", editingEntryIndex); // Log de réinitialisation
+        }
+
+        // Fonction pour supprimer une entrée du journal
+        function deleteJournalEntry(index) {
+            // Utilisation d'un modal personnalisé au lieu de confirm()
+            showCustomConfirm('Êtes-vous sûr de vouloir supprimer cette entrée du journal ?', () => {
+                console.log("Suppression de l'entrée à l'index:", index); // Log de suppression
+                journalEntries.splice(index, 1); // Supprimer l'entrée du tableau
+                saveJournalEntries(); // Sauvegarder les modifications
+                renderJournalEntries(); // Mettre à jour l'affichage
+                resetJournalForm(); // Réinitialiser le formulaire au cas où l'entrée supprimée était en cours d'édition
+            });
+        }
+
+        // Fonction pour afficher les entrées du journal
+        function renderJournalEntries() {
+            console.log("Rendu des entrées du journal. Nombre d'entrées:", journalEntries.length); // Log de rendu
+            const journalEntriesContainer = document.getElementById('journalEntriesContainer');
+            const noEntriesMessage = document.getElementById('noEntriesMessage'); // Récupération de l'élément ici
+
+            // Vider le conteneur avant de rendre les nouvelles entrées
+            journalEntriesContainer.innerHTML = ''; 
+
+            // Cacher ou afficher le message "Aucune entrée"
+            if (journalEntries.length > 0) {
+                noEntriesMessage.style.display = 'none';
+            } else {
+                noEntriesMessage.style.display = 'block';
+            }
+            
+            // Créer et ajouter les éléments pour chaque entrée
+            journalEntries.forEach((entry, index) => {
+                const entryDiv = document.createElement('div');
+                entryDiv.className = 'journal-entry';
+                
+                const resultClass = entry.resultEuro >= 0 ? 'result-positive' : 'result-negative';
+
+                entryDiv.innerHTML = `
+                    <p><span class="label">Date:</span> <span class="value">${entry.date}</span></p>
+                    <p><span class="label">Actif:</span> <span class="value">${entry.asset}</span> - <span class="value">${entry.tradeType}</span></p>
+                    <p><span class="label">Setup:</span> <span class="value">${entry.setup || 'N/A'}</span></p>
+                    <p><span class="label">Entrée:</span> <span class="value">${entry.entryPrice}</span> | <span class="label">SL:</span> <span class="value">${entry.stopLoss}</span> | <span class="label">TP:</span> <span class="value">${entry.takeProfit}</span> | <span class="label">RRR:</span> <span class="value">${entry.rrr || 'N/A'}</span></p>
+                    <p><span class="label">Taille de Position:</span> <span class="value">${entry.positionSize} lots</span></p>
+                    <p class="text-lg font-bold ${resultClass}">Résultat: ${entry.resultEuro} € (${entry.resultPercentage}%)</p>
+                    <p><span class="label">Commentaire:</span> <span class="value">${entry.comment || 'Aucun'}</span></p>
+                    <div class="journal-actions">
+                        <button onclick="editJournalEntry(${index})" class="btn-info">Modifier</button>
+                        <button onclick="deleteJournalEntry(${index})" class="btn-danger">Supprimer</button>
+                    </div>
+                `;
+                journalEntriesContainer.appendChild(entryDiv);
+            });
+        }
+
+        // --- Modale de confirmation personnalisée (remplace alert/confirm) ---
+        function showCustomConfirm(message, onConfirm) {
+            const modalId = 'customConfirmModal';
+            let modal = document.getElementById(modalId);
+
+            if (!modal) {
+                modal = document.createElement('div');
+                modal.id = modalId;
+                modal.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50';
+                modal.innerHTML = `
+                    <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+                        <p class="text-lg font-semibold text-gray-800 mb-4" id="customConfirmMessage"></p>
+                        <div class="flex justify-end space-x-3">
+                            <button id="confirmCancelBtn" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition">Annuler</button>
+                            <button id="confirmOkBtn" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition">Confirmer</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(modal);
+            }
+
+            document.getElementById('customConfirmMessage').textContent = message;
+            modal.style.display = 'flex'; // Afficher la modale
+
+            const confirmOkBtn = document.getElementById('confirmOkBtn');
+            const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+
+            // Nettoyer les anciens écouteurs d'événements pour éviter les appels multiples
+            const newConfirmOkBtn = confirmOkBtn.cloneNode(true);
+            confirmOkBtn.parentNode.replaceChild(newConfirmOkBtn, confirmOkBtn);
+            const newConfirmCancelBtn = confirmCancelBtn.cloneNode(true);
+            confirmCancelBtn.parentNode.replaceChild(newConfirmCancelBtn, confirmCancelBtn);
+
+            newConfirmOkBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                if (onConfirm) {
+                    onConfirm();
+                }
+            });
+
+            newConfirmCancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+        }
+        // --- Fin de la modale de confirmation personnalisée ---
+    </script>
+</body>
+</html>
