@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Trading App</title>
+    <title>My Simple Trading Tool</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -255,59 +255,20 @@
             width: 100%;
             margin-bottom: 1.5rem;
         }
+        /* Ensure tables are scrollable on smaller screens */
+        .overflow-x-auto {
+            overflow-x: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <header class="text-center mb-8">
-            <h1 class="text-indigo-700 mb-2">My Trading App</h1>
-            <p class="text-gray-600">Manage your risk and track your performance.</p>
+            <h1 class="text-indigo-700 mb-2">My Simple Trading Tool</h1>
+            <p class="text-gray-600">Manage your risk and track your performance (data saved locally).</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Global Performance Statistics Dashboard -->
-            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
-                <h2 class="text-gray-800 mb-6">Global Performance Statistics</h2>
-                <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
-                    <div class="performance-metric">
-                        <p>Total Trades</p>
-                        <p id="totalTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric positive">
-                        <p>Winning Trades</p>
-                        <p id="winningTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric negative">
-                        <p>Losing Trades</p>
-                        <p id="losingTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric">
-                        <p>Win Rate</p>
-                        <p id="winRate" class="value">0.00%</p>
-                    </div>
-                    <div class="performance-metric" id="totalPnLMetric">
-                        <p>Total P&L (€)</p>
-                        <p id="totalPnL" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric" id="totalPnLPercentageMetric">
-                        <p>Total P&L (%)</p>
-                        <p id="totalPnLPercentage" class="value">0.00%</p>
-                    </div>
-                    <div class="performance-metric" id="avgPnLMetric">
-                        <p>Avg P&L per Trade (€)</p>
-                        <p id="avgPnL" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric positive">
-                        <p>Largest Win (€)</p>
-                        <p id="largestWin" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric negative">
-                        <p>Largest Loss (€)</p>
-                        <p id="largestLoss" class="value">0.00 €</p>
-                    </div>
-                </div>
-            </section>
-
             <!-- Position Size Calculator -->
             <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
                 <h2 class="text-gray-800 mb-6">Position Size Calculator</h2>
@@ -356,6 +317,47 @@
                         <p>Amount Risked : <span id="amountRisqued"></span> €</p>
                     </div>
                 </div>
+
+                <!-- Global Performance Statistics Dashboard - MOVED HERE -->
+                <h2 class="text-gray-800 mb-6 mt-8">Global Performance Statistics</h2>
+                <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
+                    <div class="performance-metric">
+                        <p>Total Trades</p>
+                        <p id="totalTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric positive">
+                        <p>Winning Trades</p>
+                        <p id="winningTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric negative">
+                        <p>Losing Trades</p>
+                        <p id="losingTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric">
+                        <p>Win Rate</p>
+                        <p id="winRate" class="value">0.00%</p>
+                    </div>
+                    <div class="performance-metric" id="totalPnLMetric">
+                        <p>Total P&L (€)</p>
+                        <p id="totalPnL" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric" id="totalPnLPercentageMetric">
+                        <p>Total P&L (%)</p>
+                        <p id="totalPnLPercentage" class="value">0.00%</p>
+                    </div>
+                    <div class="performance-metric" id="avgPnLMetric">
+                        <p>Avg P&L per Trade (€)</p>
+                        <p id="avgPnL" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric positive">
+                        <p>Largest Win (€)</p>
+                        <p id="largestWin" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric negative">
+                        <p>Largest Loss (€)</p>
+                        <p id="largestLoss" class="value">0.00 €</p>
+                    </div>
+                </div>
             </section>
 
             <!-- Trading Journal -->
@@ -368,7 +370,7 @@
                         <input type="date" id="journalDate" required>
                     </div>
                     <div>
-                        <label for="journalAsset">Asset :</label>
+                        <label for="journalAssetSelect">Asset :</label>
                         <select id="journalAssetSelect">
                             <option value="EURUSD">EUR/USD</option>
                             <option value="GBPUSD">GBP/USD</option>
@@ -442,8 +444,26 @@
                 <h3 class="text-gray-800 mb-4 mt-8">Filter & Sort Options</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                     <div>
-                        <label for="filterAsset">Filter by Asset :</label>
-                        <input type="text" id="filterAsset" placeholder="Ex: EUR/USD" onkeyup="applyFiltersAndSort()">
+                        <label for="filterAssetSelect">Filter by Asset :</label>
+                        <select id="filterAssetSelect" onchange="applyFiltersAndSort()">
+                            <option value="">All</option>
+                            <option value="EURUSD">EUR/USD</option>
+                            <option value="GBPUSD">GBP/USD</option>
+                            <option value="USDJPY">USD/JPY</option>
+                            <option value="AUDUSD">AUD/USD</option>
+                            <option value="USDCAD">USD/CAD</option>
+                            <option value="USDCHF">USD/CHF</option>
+                            <option value="NZDUSD">NZD/USD</option>
+                            <option value="EURJPY">EUR/JPY</option>
+                            <option value="GBPJPY">GBP/JPY</option>
+                            <option value="XAUUSD">Gold (XAU/USD)</option>
+                            <option value="DAX40">DAX 40 (Germany)</option>
+                            <option value="SP500">S&P 500 (USA)</option>
+                            <option value="NASDAQ100">NASDAQ 100 (USA)</option>
+                            <option value="CAC40">CAC 40 (France)</option>
+                            <option value="other">Other (enter name)</option>
+                        </select>
+                        <input type="text" id="filterAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.5rem;" onkeyup="applyFiltersAndSort()">
                     </div>
                     <div>
                         <label for="filterTradeType">Filter by Trade Type :</label>
@@ -494,13 +514,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="detailed-stats-card">
                         <h4>Performance by Asset (Table)</h4>
-                        <div id="performanceByAssetTable">
+                        <div id="performanceByAssetTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No asset data available.</p>
                         </div>
                     </div>
                     <div class="detailed-stats-card">
                         <h4>Performance by Trade Type (Table)</h4>
-                        <div id="performanceByTradeTypeTable">
+                        <div id="performanceByTradeTypeTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No trade type data available.</p>
                         </div>
                     </div>
@@ -562,6 +582,21 @@
                     journalAssetCustomInput.removeAttribute('required'); // Remove required when hidden
                 }
             });
+
+            // Logic to show/hide custom asset input in filter
+            const filterAssetSelect = document.getElementById('filterAssetSelect');
+            const filterAssetCustomInput = document.getElementById('filterAssetCustom');
+            filterAssetSelect.addEventListener('change', function() {
+                if (this.value === 'other') {
+                    filterAssetCustomInput.style.display = 'block';
+                    filterAssetCustomInput.setAttribute('required', 'required'); // Make required when visible
+                } else {
+                    filterAssetCustomInput.style.display = 'none';
+                    filterAssetCustomInput.removeAttribute('required'); // Remove required when hidden
+                }
+                applyFiltersAndSort(); // Apply filters when dropdown changes
+            });
+
 
             // Handle journal form submission
             const journalForm = document.getElementById('journalForm');
@@ -866,12 +901,20 @@
             let filteredEntries = [...journalEntries]; // Copy to avoid modifying the original
 
             // 1. Filtering
-            const filterAsset = document.getElementById('filterAsset').value.toLowerCase();
+            const filterAssetSelect = document.getElementById('filterAssetSelect');
+            const filterAssetCustomInput = document.getElementById('filterAssetCustom');
+            let filterAssetValue = '';
+            if (filterAssetSelect.value === 'other') {
+                filterAssetValue = filterAssetCustomInput.value.toLowerCase();
+            } else {
+                filterAssetValue = filterAssetSelect.value.toLowerCase();
+            }
+
             const filterTradeType = document.getElementById('filterTradeType').value;
 
-            if (filterAsset) {
+            if (filterAssetValue) { // Use the determined filterAssetValue
                 filteredEntries = filteredEntries.filter(entry => 
-                    entry.asset.toLowerCase().includes(filterAsset)
+                    entry.asset.toLowerCase().includes(filterAssetValue)
                 );
             }
             if (filterTradeType) {
@@ -915,7 +958,10 @@
 
         // Function to reset filters and sort
         function resetFiltersAndSort() {
-            document.getElementById('filterAsset').value = '';
+            document.getElementById('filterAssetSelect').value = ''; // Reset dropdown
+            document.getElementById('filterAssetCustom').value = ''; // Clear custom input
+            document.getElementById('filterAssetCustom').style.display = 'none'; // Hide custom input
+            document.getElementById('filterAssetCustom').removeAttribute('required'); // Remove required
             document.getElementById('filterTradeType').value = '';
             document.getElementById('sortBy').value = 'timestamp';
             document.getElementById('sortOrder').value = 'desc';
