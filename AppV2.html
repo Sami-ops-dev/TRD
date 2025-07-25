@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Simple Trading Tool</title>
+    <title>Faynalytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -28,12 +28,21 @@
             border: 1px solid #2d3748; /* Darker subtle border */
         }
         h1 {
-            color: #1a202c; /* Darker text for heading */
-            font-size: 3.25rem; /* Even larger, more impactful title */
-            font-weight: 800; /* Extra bold */
+            /* Professional and  title styling */
+            font-size: 3.8rem; /* Even larger, more impactful title */
+            font-weight: 900; /* Extra bold */
             margin-bottom: 2.5rem; /* More space below title */
             text-align: center;
-            letter-spacing: -0.03em; /* Slightly tighter letter spacing */
+            letter-spacing: -0.04em; /* Tighter letter spacing */
+            
+            /* Gradient text effect */
+            background: linear-gradient(45deg, #7f58af, #4299e1); /* Purple to Blue gradient  */
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent; /* Fallback for non-webkit browsers */
+            
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
         }
         h2 {
             color: #2d3748;
@@ -66,7 +75,7 @@
             transition: all 0.3s ease-out; /* Smoother transition */
         }
         input[type="number"]:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
-            border-color: #7f58af; /* Revolut-like purple */
+            border-color: #7f58af; /*  purple */
             box-shadow: 0 0 0 6px rgba(127, 88, 175, 0.3); /* Larger, softer focus ring */
             outline: none;
         }
@@ -91,7 +100,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #7f58af; /* Revolut-like purple */
+            background-color: #7f58af; /*  purple */
         }
         .btn-primary:hover {
             background-color: #6c4e95; /* Darker purple on hover */
@@ -336,7 +345,7 @@
         }
         .goal-progress-bar {
             height: 28px; /* Taller bar */
-            background-color: #7f58af; /* Revolut-like purple */
+            background-color: #7f58af; /*  purple */
             width: 0%;
             border-radius: 0.75rem;
             text-align: center;
@@ -357,7 +366,7 @@
 <body>
     <div class="container">
         <header class="text-center mb-10"> <!-- More margin bottom -->
-            <h1 class="text-indigo-700 mb-4">Trading Tool</h1> <!-- More margin bottom -->
+            <h1 class="text-indigo-700 mb-4">Faynalytics</h1> <!-- Changed title to Faynalytics -->
             <p class="text-gray-600 text-lg">Manage your risk and track your performance.</p> <!-- Larger text -->
         </header>
 
@@ -658,13 +667,13 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="detailed-stats-card">
-                        <h4>Performance by Asset (Table)</h4>
+                        <h4>Performance by Asset</h4>
                         <div id="performanceByAssetTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No asset data available.</p>
                         </div>
                     </div>
                     <div class="detailed-stats-card">
-                        <h4>Performance by Trade Type (Table)</h4>
+                        <h4>Performance by Trade Type</h4>
                         <div id="performanceByTradeTypeTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No trade type data available.</p>
                         </div>
@@ -673,13 +682,13 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                     <div class="detailed-stats-card">
-                        <h4>Performance by Asset (Chart)</h4>
+                        <h4>Performance by Asset</h4>
                         <div class="chart-container">
                             <canvas id="assetPerformanceChart"></canvas>
                         </div>
                     </div>
                     <div class="detailed-stats-card">
-                        <h4>Performance by Trade Type (Chart)</h4>
+                        <h4>Performance by Trade Type</h4>
                         <div class="chart-container">
                             <canvas id="tradeTypePerformanceChart"></canvas>
                         </div>
@@ -707,7 +716,6 @@
         let equityCurveChartInstance = null;
         let assetPerformanceChartInstance = null;
         let tradeTypePerformanceChartInstance = null;
-        let dailyPnLEvolutionChartInstance = null; // Global instance for daily P&L chart
         let tradingSessionsChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -782,7 +790,6 @@
             updateTradingSessionStatus(); 
             renderTradingSessionsChart(); 
             updatePerformanceGoalDisplay(); // Update goal display on load
-            renderDailyPnLEvolutionChart(); // Initial render of daily P&L chart
 
             // Set intervals for dynamic updates
             setInterval(() => {
@@ -864,7 +871,9 @@
 
         // Function to update the display of the performance goal progress
         function updatePerformanceGoalDisplay() {
-            const totalPnL = journalEntries.reduce((sum, entry) => sum + entry.resultEuro, 0);
+            // Filter out draft entries for goal calculation
+            const nonDraftEntries = journalEntries.filter(entry => !entry.is_draft);
+            const totalPnL = nonDraftEntries.reduce((sum, entry) => sum + entry.resultEuro, 0);
             const progressPercentage = (totalPnL / targetPnLEuro * 100).toFixed(2);
             
             const currentGoalProgressElement = document.getElementById('currentGoalProgress');
@@ -994,7 +1003,7 @@
             saveJournalEntries(); // Save entries after adding
             applyFiltersAndSort(); // Re-apply filters and sort to include the new entry
             updatePerformanceGoalDisplay(); // Update goal display after new trade
-            renderDailyPnLEvolutionChart(); // Update daily P&L chart after new trade
+            // Removed: renderDailyPnLEvolutionChart(); // Removed call here
             document.getElementById('journalForm').reset(); // Reset the form
         }
 
@@ -1022,7 +1031,7 @@
                 saveJournalEntries();
                 applyFiltersAndSort(); // Re-apply filters and sort to reflect the modification
                 updatePerformanceGoalDisplay(); // Update goal display after trade update
-                renderDailyPnLEvolutionChart(); // Update daily P&L chart after trade update
+                // Removed: renderDailyPnLEvolutionChart(); // Removed call here
             } else {
                 console.error("Error: invalid editingEntryIndex or entry not found.");
                 journalErrorMessageDiv.textContent = "Error updating entry.";
@@ -1478,7 +1487,7 @@
                     datasets: [{
                         label: 'Cumulative P&L (€)',
                         data: cumulativePnL,
-                        borderColor: '#7f58af', /* Revolut-like purple */
+                        borderColor: '#7f58af', /*  purple */
                         backgroundColor: 'rgba(127, 88, 175, 0.2)',
                         fill: true,
                         tension: 0.1
@@ -1521,7 +1530,7 @@
             const labels = Object.keys(data);
             const pnLValues = labels.map(label => data[label].totalPnL);
 
-            const backgroundColors = pnLValues.map(value => value >= 0 ? '#48bb78' : '#f56565'); // Green for gain, red for loss (Revolut-like)
+            const backgroundColors = pnLValues.map(value => value >= 0 ? '#48bb78' : '#f56565'); // Green for gain, red for loss ()
 
             // Destroy old chart instance if it exists
             if (assetPerformanceChartInstance) {
@@ -1578,8 +1587,8 @@
             const pnLValues = labels.map(label => data[label].totalPnL);
 
             const backgroundColors = [
-                '#7f58af', /* Revolut-like purple for Buy */
-                '#f6ad55', /* Revolut-like orange for Sell */
+                '#7f58af', /*  purple for Buy */
+                '#f6ad55', /*  orange for Sell */
                 '#a0aec0' /* Gray for other (if applicable) */
             ]; 
 
@@ -1688,10 +1697,10 @@
 
             // Session data for Chart.js horizontal bar chart
             const sessionsData = [
-                { name: 'London', start: 8, end: 16, color: 'rgba(59, 130, 246, 0.6)' }, // Blue
-                { name: 'New York', start: 13, end: 21, color: 'rgba(249, 115, 22, 0.6)' }, // Orange
-                { name: 'Tokyo', start: 0, end: 9, color: 'rgba(139, 92, 246, 0.6)' }, // Purple
-                { name: 'Sydney', start: 22, end: 7, color: 'rgba(16, 185, 129, 0.6)' } // Green
+                { name: 'London', start: 8, end: 16, color: 'rgba(127, 88, 175, 0.6)' }, /*  purple */
+                { name: 'New York', start: 13, end: 21, color: 'rgba(246, 173, 85, 0.6)' }, /*  orange */
+                { name: 'Tokyo', start: 0, end: 9, color: 'rgba(66, 153, 225, 0.6)' }, /*  blue */
+                { name: 'Sydney', start: 22, end: 7, color: 'rgba(76, 175, 80, 0.6)' } /*  green */
             ];
 
             const datasets = [];
@@ -1749,9 +1758,9 @@
                             display: false, // Hide dataset legends, labels are on Y-axis
                         },
                         currentTimeLine: { // Plugin options
-                            lineColor: '#ef4444',
+                            lineColor: '#f56565', /*  red */
                             lineWidth: 2,
-                            labelColor: '#ef4444',
+                            labelColor: '#f56565',
                             labelFont: '12px Inter'
                         }
                     },
