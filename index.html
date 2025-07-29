@@ -506,6 +506,42 @@
                 margin-top: 1rem;
             }
         }
+
+        /* Specific styles for tabs within Detailed Statistics & Charts */
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+            gap: 0.5rem; /* Space between buttons */
+            margin-bottom: 1rem; /* Space below tab buttons */
+            justify-content: center; /* Center buttons horizontally */
+        }
+        .tab-button {
+            padding: 0.75rem 1.2rem;
+            border-radius: 0.75rem;
+            background-color: #e2e8f0; /* Light gray for inactive tabs */
+            color: #4a5568;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease-out;
+            border: 1px solid #cbd5e0;
+            flex-grow: 1; /* Allow buttons to grow and fill space */
+            text-align: center;
+        }
+        .tab-button:hover {
+            background-color: #cfd8e3;
+        }
+        .tab-button.active {
+            background-color: #7f58af; /* Purple for active tab */
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .tab-content {
+            display: none; /* Hidden by default */
+            padding-top: 1rem; /* Space between tab buttons and content */
+        }
+        .tab-content.active {
+            display: block; /* Show active tab content */
+        }
     </style>
 </head>
 <body>
@@ -519,7 +555,8 @@
             <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
                 <h2 class="text-gray-800 mb-4 md:mb-6">Position Size Calculator</h2>
                 <div id="calcErrorMessage" class="error-message"></div>
-                <div class="space-y-3"> <div>
+                <div class="space-y-3">
+                    <div>
                         <label for="capital">Account Capital (€) :</label>
                         <input type="number" id="capital" value="1000" min="1" step="any">
                     </div>
@@ -825,38 +862,50 @@
             <section class="md:col-span-2 bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
                 <h2 class="text-gray-800 mb-4 md:mb-6">Detailed Statistics & Charts</h2>
                 
-                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Equity Curve (Cumulative P&L)</h3>
-                <div class="chart-container">
-                    <canvas id="equityCurveChart"></canvas>
+                <div class="tab-buttons" role="tablist" aria-label="Detailed Statistics Options">
+                    <button type="button" class="tab-button active" role="tab" aria-selected="true" aria-controls="equityCurveTab" id="equityCurveTabButton" onclick="showTab('equityCurveTab')">Equity Curve</button>
+                    <button type="button" class="tab-button" role="tab" aria-selected="false" aria-controls="assetTableTab" id="assetTableTabButton" onclick="showTab('assetTableTab')">Assets (Table)</button>
+                    <button type="button" class="tab-button" role="tab" aria-selected="false" aria-controls="tradeTypeTableTab" id="tradeTypeTableTabButton" onclick="showTab('tradeTypeTableTab')">Trade Types (Table)</button>
+                    <button type="button" class="tab-button" role="tab" aria-selected="false" aria-controls="assetChartTab" id="assetChartTabButton" onclick="showTab('assetChartTab')">Assets (Chart)</button>
+                    <button type="button" class="tab-button" role="tab" aria-selected="false" aria-controls="tradeTypeChartTab" id="tradeTypeChartTabButton" onclick="showTab('tradeTypeChartTab')">Trade Types (Chart)</button>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="detailed-stats-card">
-                        <h4>Performance by Asset</h4>
+                <div id="equityCurveTab" class="tab-content active" role="tabpanel" aria-labelledby="equityCurveTabButton">
+                    <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Equity Curve (Cumulative P&L)</h3>
+                    <div class="chart-container">
+                        <canvas id="equityCurveChart"></canvas>
+                    </div>
+                </div>
+
+                <div id="assetTableTab" class="tab-content" role="tabpanel" aria-labelledby="assetTableTabButton">
+                    <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance by Asset (Table)</h3>
+                    <div class="detailed-stats-card !p-0 !shadow-none !border-none !mb-0">
                         <div id="performanceByAssetTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No asset data available.</p>
                         </div>
                     </div>
-                    <div class="detailed-stats-card">
-                        <h4>Performance by Trade Type</h4>
+                </div>
+
+                <div id="tradeTypeTableTab" class="tab-content" role="tabpanel" aria-labelledby="tradeTypeTableTabButton">
+                    <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance by Trade Type (Table)</h3>
+                    <div class="detailed-stats-card !p-0 !shadow-none !border-none !mb-0">
                         <div id="performanceByTradeTypeTable" class="overflow-x-auto">
                             <p class="text-center text-gray-600">No trade type data available.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                    <div class="detailed-stats-card">
-                        <h4>Performance by Asset</h4>
-                        <div class="chart-container">
-                            <canvas id="assetPerformanceChart"></canvas>
-                        </div>
+                <div id="assetChartTab" class="tab-content" role="tabpanel" aria-labelledby="assetChartTabButton">
+                    <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance by Asset (Chart)</h3>
+                    <div class="chart-container">
+                        <canvas id="assetPerformanceChart"></canvas>
                     </div>
-                    <div class="detailed-stats-card">
-                        <h4>Performance by Trade Type</h4>
-                        <div class="chart-container">
-                            <canvas id="tradeTypePerformanceChart"></canvas>
-                        </div>
+                </div>
+
+                <div id="tradeTypeChartTab" class="tab-content" role="tabpanel" aria-labelledby="tradeTypeChartTabButton">
+                    <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance by Trade Type (Chart)</h3>
+                    <div class="chart-container">
+                        <canvas id="tradeTypePerformanceChart"></canvas>
                     </div>
                 </div>
             </section>
@@ -988,6 +1037,10 @@
                 updateTradingSessionStatus();
                 renderTradingSessionsChart(); // Redraw chart to update current time line
             }, 60000); // Update every minute
+
+            // --- Tab Logic Initialization ---
+            // Show the first tab by default
+            showTab('equityCurveTab'); 
         });
 
         // Function to save entries to local storage
@@ -1674,6 +1727,33 @@
             renderEquityCurveChart(nonDraftEntries); // Pass non-draft entries for charts
             renderAssetPerformanceChart(performanceByAsset);
             renderTradeTypePerformanceChart(performanceByTradeType);
+        }
+
+        // --- Tab Control Logic ---
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(tabContent => {
+                tabContent.classList.remove('active');
+            });
+            // Deactivate all tab buttons
+            document.querySelectorAll('.tab-button').forEach(tabButton => {
+                tabButton.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            document.getElementById(tabName).classList.add('active');
+            // Activate the corresponding tab button
+            document.getElementById(tabName + 'Button').classList.add('active');
+
+            // Force chart re-render when their tab is shown
+            // This is crucial for Chart.js to render correctly in hidden divs
+            if (tabName === 'equityCurveTab' && equityCurveChartInstance) {
+                equityCurveChartInstance.update();
+            } else if (tabName === 'assetChartTab' && assetPerformanceChartInstance) {
+                assetPerformanceChartInstance.update();
+            } else if (tabName === 'tradeTypeChartTab' && tradeTypePerformanceChartInstance) {
+                tradeTypePerformanceChartInstance.update();
+            }
         }
 
         // Function to render the equity curve chart
