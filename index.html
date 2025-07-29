@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faynalytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <style>
         /* Inter font for better readability */
@@ -75,7 +74,7 @@
             transition: all 0.3s ease-out; /* Smoother transition */
         }
         input[type="number"]:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
-            border-color: #7f58af; /*  purple */
+            border-color: #7f58af; /* purple */
             box-shadow: 0 0 0 6px rgba(127, 88, 175, 0.3); /* Larger, softer focus ring */
             outline: none;
         }
@@ -100,7 +99,7 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         .btn-primary {
-            background-color: #7f58af; /*  purple */
+            background-color: #7f58af; /* purple */
         }
         .btn-primary:hover {
             background-color: #6c4e95; /* Darker purple on hover */
@@ -345,7 +344,7 @@
         }
         .goal-progress-bar {
             height: 28px; /* Taller bar */
-            background-color: #7f58af; /*  purple */
+            background-color: #7f58af; /* purple */
             width: 0%;
             border-radius: 0.75rem;
             text-align: center;
@@ -365,91 +364,13 @@
 </head>
 <body>
     <div class="container">
-        <header class="text-center mb-10"> <!-- More margin bottom -->
-            <h1 class="text-indigo-700 mb-4">Faynalytics</h1> <!-- Changed title to Faynalytics -->
-            <p class="text-gray-600 text-lg">Manage your risk and track your performance.</p> <!-- Larger text -->
+        <header class="text-center mb-10">
+            <h1 class="text-indigo-700 mb-4">Faynalytics</h1>
+            <p class="text-gray-600 text-lg">Manage your risk and track your performance.</p>
         </header>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Position Size Calculator -->
             <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-6">Position Size Calculator</h2>
-                <div id="calcErrorMessage" class="error-message"></div>
-                <div class="space-y-4">
-                    <div>
-                        <label for="capital">Account Capital (€) :</label>
-                        <input type="number" id="capital" value="1000" min="1" step="any">
-                    </div>
-                    <div>
-                        <label for="riskPercentage">Risk Percentage per Trade (%) :</label>
-                        <input type="number" id="riskPercentage" value="1" min="0.1" max="10" step="0.1">
-                    </div>
-                    <div>
-                        <label for="currencyPair">Currency Pair / Asset :</label>
-                        <select id="currencyPair">
-                            <option value="EURUSD">EUR/USD</option>
-                            <option value="GBPUSD">GBP/USD</option>
-                            <option value="USDJPY">USD/JPY</option>
-                            <option value="AUDUSD">AUD/USD</option>
-                            <option value="USDCAD">USD/CAD</option>
-                            <option value="USDCHF">USD/CHF</option>
-                            <option value="NZDUSD">NZD/USD</option>
-                            <option value="EURJPY">EUR/JPY</option>
-                            <option value="GBPJPY">GBP/JPY</option>
-                            <option value="XAUUSD">Gold (XAU/USD)</option>
-                            <option value="DAX40">DAX 40 (Germany)</option>
-                            <option value="SP500">S&P 500 (USA)</option>
-                            <option value="NASDAQ100">NASDAQ 100 (USA)</option>
-                            <option value="CAC40">CAC 40 (France)</option>
-                            <option value="custom">Other (enter pip value)</option>
-                        </select>
-                    </div>
-                    <div id="customPipValueContainer" style="display: none;">
-                        <label for="customPipValue">Pip/Point Value per Standard Lot (€) :</label>
-                        <input type="number" id="customPipValue" value="10" min="0.01" step="any">
-                    </div>
-
-                    <div>
-                        <label for="stopLossInputMethod">Stop Loss Input Method :</label>
-                        <select id="stopLossInputMethod">
-                            <option value="pips_direct">Enter Pips Directly</option>
-                            <option value="price_based">Calculate Pips from Price</option>
-                        </select>
-                    </div>
-
-                    <div id="pipsDirectInputContainer">
-                        <label for="stopLossPips">Stop Loss (in Pips) :</label>
-                        <input type="number" id="stopLossPips" value="20" min="1" step="any">
-                    </div>
-
-                    <div id="priceBasedInputContainer" style="display: none;">
-                        <div>
-                            <label for="entryPrice">Entry Price :</label>
-                            <input type="number" id="entryPrice" step="any">
-                        </div>
-                        <div>
-                            <label for="stopLossPrice">Stop Loss Price :</label>
-                            <input type="number" id="stopLossPrice" step="any">
-                        </div>
-                        <div>
-                            <label for="tradeTypeForSL">Trade Type :</label>
-                            <select id="tradeTypeForSL">
-                                <option value="buy">Buy</option>
-                                <option value="sell">Sell</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <button onclick="calculatePositionSize()" class="btn-primary">Calculate Position Size</button>
-                    <div id="resultBox" class="result-box">
-                        <p>Recommended Position Size : <span id="lotSize"></span> lots</p>
-                        <p>Pip/Point Value : <span id="pipValueDisplay"></span> €</p>
-                        <p>Amount Risked : <span id="amountRisqued"></span> €</p>
-                        <p id="calculatedPipsDisplay" style="display:none;">Calculated Pips: <span id="calculatedPips"></span></p>
-                    </div>
-                </div>
-
-                <!-- Global Performance Statistics Dashboard -->
                 <h2 class="text-gray-800 mb-6 mt-8">Global Performance Statistics</h2>
                 <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
                     <div class="performance-metric">
@@ -490,7 +411,6 @@
                     </div>
                 </div>
 
-                <!-- Performance Goal Tracker -->
                 <h3 class="text-gray-800 mb-4 mt-8">Performance Goal Tracker</h3>
                 <div id="goalTrackerErrorMessage" class="error-message"></div>
                 <div class="space-y-4">
@@ -514,7 +434,6 @@
                     </div>
                 </div>
 
-                <!-- Trading Session Status -->
                 <h3 class="text-gray-800 mb-4 mt-8">Trading Session Status (UTC)</h3>
                 <div id="sessionStatus" class="session-status-grid mb-4">
                     <div class="session-item">
@@ -534,13 +453,11 @@
                         <span>Sydney</span>
                     </div>
                 </div>
-                <!-- Canvas for session overlap visualization -->
                 <div class="chart-container" style="height: 200px;">
                     <canvas id="tradingSessionsChartCanvas"></canvas>
                 </div>
             </section>
 
-            <!-- Trading Journal -->
             <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
                 <h2 class="text-gray-800 mb-6">Trading Journal</h2>
                 <div id="journalErrorMessage" class="error-message"></div>
@@ -606,12 +523,10 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                             <label for="journalResultEuro">Result (€) :</label>
-                            <input type="number" id="journalResultEuro" step="any"> <!-- No longer required -->
-                        </div>
+                            <input type="number" id="journalResultEuro" step="any"> </div>
                         <div>
                             <label for="journalResultPercentage">Result (%) :</label>
-                            <input type="number" id="journalResultPercentage" step="any"> <!-- No longer required -->
-                        </div>
+                            <input type="number" id="journalResultPercentage" step="any"> </div>
                     </div>
                     <div>
                         <label for="journalComment">Comment / Emotion :</label>
@@ -677,18 +592,14 @@
 
 
                 <h3 class="text-gray-800 mb-4 mt-8">My Journal Entries</h3>
-                <!-- Moved noEntriesMessage outside journalEntriesContainer -->
                 <p class="text-center text-gray-600" id="noEntriesMessage">No journal entries yet. Add your first trade!</p>
                 <div id="journalEntriesContainer" class="space-y-4">
-                    <!-- Journal entries will be added here by JavaScript -->
-                </div>
+                    </div>
             </section>
 
-            <!-- Detailed Statistics & Charts -->
             <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
                 <h2 class="text-gray-800 mb-6">Detailed Statistics & Charts</h2>
                 
-                <!-- Equity Curve Chart -->
                 <h3 class="text-gray-800 mb-4 mt-8">Equity Curve (Cumulative P&L)</h3>
                 <div class="chart-container">
                     <canvas id="equityCurveChart"></canvas>
@@ -748,17 +659,6 @@
         let tradingSessionsChartInstance = null;
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Logic to show/hide custom pip value field in calculator
-            const currencyPairSelect = document.getElementById('currencyPair');
-            const customPipValueContainer = document.getElementById('customPipValueContainer');
-            currencyPairSelect.addEventListener('change', function() {
-                if (this.value === 'custom') {
-                    customPipValueContainer.style.display = 'block';
-                } else {
-                    customPipValueContainer.style.display = 'none';
-                }
-            });
-
             // Logic to show/hide custom asset input in journal
             const journalAssetSelect = document.getElementById('journalAssetSelect');
             const journalAssetCustomInput = document.getElementById('journalAssetCustom');
@@ -784,21 +684,6 @@
                     filterAssetCustomInput.removeAttribute('required'); // Remove required when hidden
                 }
                 applyFiltersAndSort(); // Apply filters when dropdown changes
-            });
-
-            // Logic to toggle Stop Loss input method
-            const stopLossInputMethodSelect = document.getElementById('stopLossInputMethod');
-            const pipsDirectInputContainer = document.getElementById('pipsDirectInputContainer');
-            const priceBasedInputContainer = document.getElementById('priceBasedInputContainer');
-
-            stopLossInputMethodSelect.addEventListener('change', function() {
-                if (this.value === 'pips_direct') {
-                    pipsDirectInputContainer.style.display = 'block';
-                    priceBasedInputContainer.style.display = 'none';
-                } else {
-                    pipsDirectInputContainer.style.display = 'none';
-                    priceBasedInputContainer.style.display = 'block';
-                }
             });
 
             // Handle "Add to Journal" / "Update Journal" button click
@@ -936,112 +821,6 @@
 
             goalProgressDisplayBox.classList.add('show'); // Ensure the display box is visible
             console.log("Performance goal display updated. Progress:", progressPercentage + "%");
-        }
-
-        // Function to get pip decimal value based on currency pair for price calculations
-        function getPipDecimalValue(currencyPair) {
-            switch (currencyPair) {
-                case 'USDJPY': case 'EURJPY': case 'GBPJPY': 
-                    return 0.01; // JPY pairs have 2 decimal places for pips
-                case 'XAUUSD': case 'SP500': case 'NASDAQ100': 
-                    return 0.1; // Gold often quoted with 2 decimal places for pips
-                case 'DAX40': case 'CAC40':
-                    return 1; // Indices are usually 1 point = 1 pip
-                case 'custom':
-                    // For custom, we assume a standard Forex pip decimal value unless specified otherwise.
-                    // If the user wants to calculate pips from price for a custom asset, they need to know its tick size.
-                    // For simplicity, we'll use a common default for 'custom' here.
-                    return 0.0001; 
-                default: // Most other Forex pairs have 4 decimal places for pips
-                    return 0.0001;
-            }
-        }
-
-        // Function to calculate position size
-        function calculatePositionSize() {
-            const capital = parseFloat(document.getElementById('capital').value);
-            const riskPercentage = parseFloat(document.getElementById('riskPercentage').value);
-            const currencyPair = document.getElementById('currencyPair').value;
-            const stopLossInputMethod = document.getElementById('stopLossInputMethod').value;
-            
-            let stopLossPips; // This will be calculated or taken directly
-            let calcErrorMessage = null;
-
-            if (stopLossInputMethod === 'pips_direct') {
-                stopLossPips = parseFloat(document.getElementById('stopLossPips').value);
-                if (isNaN(stopLossPips) || stopLossPips <= 0) {
-                    calcErrorMessage = "Please enter a valid Stop Loss (in Pips) (> 0).";
-                }
-            } else { // price_based
-                const entryPrice = parseFloat(document.getElementById('entryPrice').value);
-                const stopLossPrice = parseFloat(document.getElementById('stopLossPrice').value);
-                const tradeTypeForSL = document.getElementById('tradeTypeForSL').value;
-                const pipDecimalValue = getPipDecimalValue(currencyPair); // Get pip decimal value based on selected currency pair
-
-                if (isNaN(entryPrice) || isNaN(stopLossPrice) || entryPrice <= 0 || stopLossPrice <= 0) {
-                    calcErrorMessage = "Please enter valid Entry Price and Stop Loss Price (> 0).";
-                } else if (pipDecimalValue <= 0) {
-                    calcErrorMessage = "Invalid Pip Decimal Value for the selected asset.";
-                } else {
-                    let priceDifference = Math.abs(entryPrice - stopLossPrice);
-                    stopLossPips = priceDifference / pipDecimalValue;
-                    document.getElementById('calculatedPips').textContent = stopLossPips.toFixed(2);
-                    document.getElementById('calculatedPipsDisplay').style.display = 'block';
-                }
-            }
-
-            const calcErrorMessageDiv = document.getElementById('calcErrorMessage');
-            const resultBox = document.getElementById('resultBox');
-
-            // Hide previous messages and results
-            calcErrorMessageDiv.classList.remove('show');
-            resultBox.classList.remove('show');
-
-            // General validation
-            if (isNaN(capital) || capital <= 0) {
-                calcErrorMessage = calcErrorMessage || "Please enter a valid Account Capital (> 0).";
-            }
-            if (isNaN(riskPercentage) || riskPercentage <= 0 || riskPercentage > 100) {
-                calcErrorMessage = calcErrorMessage || "Please enter a valid Risk Percentage (between 0.1 and 100).";
-            }
-            if (isNaN(stopLossPips) || stopLossPips <= 0) {
-                 calcErrorMessage = calcErrorMessage || "Stop Loss Pips could not be determined. Please check your inputs.";
-            }
-
-            if (calcErrorMessage) {
-                calcErrorMessageDiv.textContent = calcErrorMessage;
-                calcErrorMessageDiv.classList.add('show');
-                resultBox.style.display = 'none'; // Hide results if there's an error
-                document.getElementById('calculatedPipsDisplay').style.display = 'none'; // Hide calculated pips on error
-                return;
-            }
-
-            let pipValuePerStandardLot; 
-            // This part uses the same currencyPair selection for the monetary value of a pip.
-            switch (currencyPair) {
-                case 'EURUSD': case 'GBPUSD': case 'AUDUSD': case 'NZDUSD': pipValuePerStandardLot = 10; break;
-                case 'USDJPY': case 'EURJPY': case 'GBPJPY': pipValuePerStandardLot = 8.5; break; 
-                case 'XAUUSD': case 'NASDAQ100':case 'DAX40': case 'SP500': case 'CAC40': pipValuePerStandardLot = 1; break;
-                case 'custom':
-                    pipValuePerStandardLot = parseFloat(document.getElementById('customPipValue').value);
-                    if (isNaN(pipValuePerStandardLot) || pipValuePerStandardLot <= 0) {
-                        calcErrorMessageDiv.textContent = "Please enter a valid custom Pip/Point Value per Standard Lot (> 0).";
-                        calcErrorMessageDiv.classList.add('show');
-                        resultBox.style.display = 'none';
-                        document.getElementById('calculatedPipsDisplay').style.display = 'none';
-                        return;
-                    }
-                    break;
-                default: pipValuePerStandardLot = 10;
-            }
-
-            const amountToRisk = (capital * riskPercentage) / 100;
-            const lotSize = amountToRisk / (stopLossPips * pipValuePerStandardLot);
-
-            document.getElementById('lotSize').textContent = lotSize.toFixed(2);
-            document.getElementById('pipValueDisplay').textContent = pipValuePerStandardLot.toFixed(2);
-            document.getElementById('amountRisqued').textContent = amountToRisk.toFixed(2);
-            resultBox.classList.add('show');
         }
 
         // Function to add a journal entry
@@ -1543,7 +1322,7 @@
                     datasets: [{
                         label: 'Cumulative P&L (€)',
                         data: cumulativePnL,
-                        borderColor: '#7f58af', /*  purple */
+                        borderColor: '#7f58af', /* purple */
                         backgroundColor: 'rgba(127, 88, 175, 0.2)',
                         fill: true,
                         tension: 0.1
@@ -1643,8 +1422,8 @@
             const pnLValues = labels.map(label => data[label].totalPnL);
 
             const backgroundColors = [
-                '#7f58af', /*  purple for Buy */
-                '#f6ad55', /*  orange for Sell */
+                '#7f58af', /* purple for Buy */
+                '#f6ad55', /* orange for Sell */
                 '#a0aec0' /* Gray for other (if applicable) */
             ]; 
 
@@ -1753,10 +1532,10 @@
 
             // Session data for Chart.js horizontal bar chart
             const sessionsData = [
-                { name: 'London', start: 8, end: 16, color: 'rgba(127, 88, 175, 0.6)' }, /*  purple */
-                { name: 'New York', start: 13, end: 21, color: 'rgba(246, 173, 85, 0.6)' }, /*  orange */
-                { name: 'Tokyo', start: 0, end: 9, color: 'rgba(66, 153, 225, 0.6)' }, /*  blue */
-                { name: 'Sydney', start: 22, end: 7, color: 'rgba(76, 175, 80, 0.6)' } /*  green */
+                { name: 'London', start: 8, end: 16, color: 'rgba(127, 88, 175, 0.6)' }, /* purple */
+                { name: 'New York', start: 13, end: 21, color: 'rgba(246, 173, 85, 0.6)' }, /* orange */
+                { name: 'Tokyo', start: 0, end: 9, color: 'rgba(66, 153, 225, 0.6)' }, /* blue */
+                { name: 'Sydney', start: 22, end: 7, color: 'rgba(76, 175, 80, 0.6)' } /* green */
             ];
 
             const datasets = [];
@@ -1814,7 +1593,7 @@
                             display: false, // Hide dataset legends, labels are on Y-axis
                         },
                         currentTimeLine: { // Plugin options
-                            lineColor: '#ef4444', /*  red */
+                            lineColor: '#ef4444', /* red */
                             lineWidth: 2,
                             labelColor: '#ef4444',
                             labelFont: '12px Inter'
