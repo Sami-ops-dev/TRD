@@ -594,94 +594,6 @@
             </section>
 
             <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-4 md:mb-6 mt-4 md:mt-8">Global Performance Statistics</h2>
-                <div id="performanceDashboard" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-center">
-                    <div class="performance-metric">
-                        <p>Total Trades</p>
-                        <p id="totalTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric positive">
-                        <p>Winning Trades</p>
-                        <p id="winningTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric negative">
-                        <p>Losing Trades</p>
-                        <p id="losingTrades" class="value">0</p>
-                    </div>
-                    <div class="performance-metric">
-                        <p>Win Rate</p>
-                        <p id="winRate" class="value">0.00%</p>
-                    </div>
-                    <div class="performance-metric" id="totalPnLMetric">
-                        <p>Total P&L (€)</p>
-                        <p id="totalPnL" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric" id="totalPnLPercentageMetric">
-                        <p>Total P&L (%)</p>
-                        <p id="totalPnLPercentage" class="value">0.00%</p>
-                    </div>
-                    <div class="performance-metric" id="avgPnLMetric">
-                        <p>Avg P&L per Trade (€)</p>
-                        <p id="avgPnL" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric positive">
-                        <p>Largest Win (€)</p>
-                        <p id="largestWin" class="value">0.00 €</p>
-                    </div>
-                    <div class="performance-metric negative">
-                        <p>Largest Loss (€)</p>
-                        <p id="largestLoss" class="value">0.00 €</p>
-                    </div>
-                </div>
-
-                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance Goal Tracker</h3>
-                <div id="goalTrackerErrorMessage" class="error-message"></div>
-                <div class="space-y-3">
-                    <div>
-                        <label for="initialCapital">Initial Capital (€) :</label>
-                        <input type="number" id="initialCapital" value="10000" min="1" step="any">
-                    </div>
-                    <div>
-                        <label for="targetPnLEuro">Target P&L (€) :</label>
-                        <input type="number" id="targetPnLEuro" value="1000" min="0.01" step="any">
-                    </div>
-                    <div>
-                        <button onclick="setPerformanceGoal()" class="btn-primary">Set Goal</button>
-                    </div>
-                    <div id="goalProgressDisplay" class="result-box">
-                        <p>Current Progress : <span id="currentGoalProgress">0.00%</span></p>
-                        <div class="goal-progress-bar-container">
-                            <div id="goalProgressBar" class="goal-progress-bar"></div>
-                        </div>
-                        <p class="text-xs text-gray-600 mt-1">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
-                    </div>
-                </div>
-
-                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Trading Session Status (UTC)</h3>
-                <div id="sessionStatus" class="session-status-grid mb-3">
-                    <div class="session-item">
-                        <div id="londonStatus" class="status-indicator"></div>
-                        <span>London</span>
-                    </div>
-                    <div class="session-item">
-                        <div id="newYorkStatus" class="status-indicator"></div>
-                        <span>New York</span>
-                    </div>
-                    <div class="session-item">
-                        <div id="tokyoStatus" class="status-indicator"></div>
-                        <span>Tokyo</span>
-                    </div>
-                    <div class="session-item">
-                        <div id="sydneyStatus" class="status-indicator"></div>
-                        <span>Sydney</span>
-                    </div>
-                </div>
-                <div class="chart-container" style="height: 180px;">
-                    <canvas id="tradingSessionsChartCanvas"></canvas>
-                </div>
-            </section>
-
-            <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
                 <h2 class="text-gray-800 mb-4 md:mb-6">Trading Journal</h2>
                 <div id="journalErrorMessage" class="error-message"></div>
                 <form id="journalForm" class="space-y-3 mb-6">
@@ -820,6 +732,94 @@
                 <p class="text-center text-gray-600 text-sm" id="noEntriesMessage">No journal entries yet. Add your first trade!</p>
                 <div id="journalEntriesContainer" class="space-y-3">
                     </div>
+            </section>
+            
+            <section class="md:col-span-2 bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-gray-800 mb-4 md:mb-6 mt-4 md:mt-8">Global Performance Statistics</h2>
+                <div id="performanceDashboard" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-center">
+                    <div class="performance-metric">
+                        <p>Total Trades</p>
+                        <p id="totalTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric positive">
+                        <p>Winning Trades</p>
+                        <p id="winningTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric negative">
+                        <p>Losing Trades</p>
+                        <p id="losingTrades" class="value">0</p>
+                    </div>
+                    <div class="performance-metric">
+                        <p>Win Rate</p>
+                        <p id="winRate" class="value">0.00%</p>
+                    </div>
+                    <div class="performance-metric" id="totalPnLMetric">
+                        <p>Total P&L (€)</p>
+                        <p id="totalPnL" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric" id="totalPnLPercentageMetric">
+                        <p>Total P&L (%)</p>
+                        <p id="totalPnLPercentage" class="value">0.00%</p>
+                    </div>
+                    <div class="performance-metric" id="avgPnLMetric">
+                        <p>Avg P&L per Trade (€)</p>
+                        <p id="avgPnL" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric positive">
+                        <p>Largest Win (€)</p>
+                        <p id="largestWin" class="value">0.00 €</p>
+                    </div>
+                    <div class="performance-metric negative">
+                        <p>Largest Loss (€)</p>
+                        <p id="largestLoss" class="value">0.00 €</p>
+                    </div>
+                </div>
+
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance Goal Tracker</h3>
+                <div id="goalTrackerErrorMessage" class="error-message"></div>
+                <div class="space-y-3">
+                    <div>
+                        <label for="initialCapital">Initial Capital (€) :</label>
+                        <input type="number" id="initialCapital" value="10000" min="1" step="any">
+                    </div>
+                    <div>
+                        <label for="targetPnLEuro">Target P&L (€) :</label>
+                        <input type="number" id="targetPnLEuro" value="1000" min="0.01" step="any">
+                    </div>
+                    <div>
+                        <button onclick="setPerformanceGoal()" class="btn-primary">Set Goal</button>
+                    </div>
+                    <div id="goalProgressDisplay" class="result-box">
+                        <p>Current Progress : <span id="currentGoalProgress">0.00%</span></p>
+                        <div class="goal-progress-bar-container">
+                            <div id="goalProgressBar" class="goal-progress-bar"></div>
+                        </div>
+                        <p class="text-xs text-gray-600 mt-1">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
+                    </div>
+                </div>
+
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Trading Session Status (UTC)</h3>
+                <div id="sessionStatus" class="session-status-grid mb-3">
+                    <div class="session-item">
+                        <div id="londonStatus" class="status-indicator"></div>
+                        <span>London</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="newYorkStatus" class="status-indicator"></div>
+                        <span>New York</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="tokyoStatus" class="status-indicator"></div>
+                        <span>Tokyo</span>
+                    </div>
+                    <div class="session-item">
+                        <div id="sydneyStatus" class="status-indicator"></div>
+                        <span>Sydney</span>
+                    </div>
+                </div>
+                <div class="chart-container" style="height: 180px;">
+                    <canvas id="tradingSessionsChartCanvas"></canvas>
+                </div>
             </section>
 
             <section class="md:col-span-2 bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
