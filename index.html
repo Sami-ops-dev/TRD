@@ -526,6 +526,9 @@
             border: 1px solid #cbd5e0;
             flex-grow: 1; /* Allow buttons to grow and fill space */
             text-align: center;
+            white-space: nowrap; /* Prevent text wrapping within button */
+            overflow: hidden; /* Hide overflow if text is too long */
+            text-overflow: ellipsis; /* Add ellipsis if text is clipped */
         }
         .tab-button:hover {
             background-color: #cfd8e3;
@@ -555,8 +558,7 @@
             <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
                 <h2 class="text-gray-800 mb-4 md:mb-6">Position Size Calculator</h2>
                 <div id="calcErrorMessage" class="error-message"></div>
-                <div class="space-y-3">
-                    <div>
+                <div class="space-y-3"> <div>
                         <label for="capital">Account Capital (€) :</label>
                         <input type="number" id="capital" value="1000" min="1" step="any">
                     </div>
@@ -1142,7 +1144,7 @@
             console.log("Performance goal display updated. Progress:", progressPercentage + "%");
         }
 
-        // --- Position Size Calculator Functions (re-added) ---
+        // --- Position Size Calculator Functions ---
 
         // This function is crucial for calculating pips based on asset for price-based SL
         function getPipDecimalValue(currencyPair) {
@@ -1745,14 +1747,15 @@
             // Activate the corresponding tab button
             document.getElementById(tabName + 'Button').classList.add('active');
 
-            // Force chart re-render when their tab is shown
+            // Force chart re-render/update when their tab is shown
             // This is crucial for Chart.js to render correctly in hidden divs
+            // We call update() on existing instances rather than destroying and recreating
             if (tabName === 'equityCurveTab' && equityCurveChartInstance) {
                 equityCurveChartInstance.update();
             } else if (tabName === 'assetChartTab' && assetPerformanceChartInstance) {
                 assetPerformanceChartInstance.update();
             } else if (tabName === 'tradeTypeChartTab' && tradeTypePerformanceChartInstance) {
-                tradeTypePerformanceChartInstance.update();
+                tradeTypeChartInstance.update(); // This is the key change for Trade Type Chart
             }
         }
 
@@ -1773,52 +1776,55 @@
                 cumulativePnL.push(currentPnL);
             });
 
-            // Destroy old chart instance if it exists
+            // If chart instance already exists, update its data
             if (equityCurveChartInstance) {
-                equityCurveChartInstance.destroy();
-            }
-
-            equityCurveChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Cumulative P&L (€)',
-                        data: cumulativePnL,
-                        borderColor: '#7f58af', /* purple */
-                        backgroundColor: 'rgba(127, 88, 175, 0.2)',
-                        fill: true,
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: false, // Title already in H3
-                        },
-                        legend: {
-                            display: true,
-                            position: 'top',
-                        }
+                equityCurveChartInstance.data.labels = labels;
+                equityCurveChartInstance.data.datasets[0].data = cumulativePnL;
+                equityCurveChartInstance.update(); // Update existing chart
+            } else {
+                // Otherwise, create a new chart instance
+                equityCurveChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Cumulative P&L (€)',
+                            data: cumulativePnL,
+                            borderColor: '#7f58af', /* purple */
+                            backgroundColor: 'rgba(127, 88, 175, 0.2)',
+                            fill: true,
+                            tension: 0.1
+                        }]
                     },
-                    scales: {
-                        x: {
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
                             title: {
+                                display: false,
+                            },
+                            legend: {
                                 display: true,
-                                text: 'Date'
+                                position: 'top',
                             }
                         },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'P&L (€)'
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'P&L (€)'
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         // Function to render asset performance chart
@@ -1827,54 +1833,41 @@
 
             const labels = Object.keys(data);
             const pnLValues = labels.map(label => data[label].totalPnL);
+            const backgroundColors = pnLValues.map(value => value >= 0 ? '#48bb78' : '#f56565');
 
-            const backgroundColors = pnLValues.map(value => value >= 0 ? '#48bb78' : '#f56565'); // Green for gain, red for loss 
-
-            // Destroy old chart instance if it exists
             if (assetPerformanceChartInstance) {
-                assetPerformanceChartInstance.destroy();
-            }
-
-            assetPerformanceChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total P&L (€)',
-                        data: pnLValues,
-                        backgroundColor: backgroundColors,
-                        borderColor: backgroundColors,
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: false,
-                        },
-                        legend: {
-                            display: false, // No legend needed for a single series with conditional colors
-                        }
+                assetPerformanceChartInstance.data.labels = labels;
+                assetPerformanceChartInstance.data.datasets[0].data = pnLValues;
+                assetPerformanceChartInstance.data.datasets[0].backgroundColor = backgroundColors;
+                assetPerformanceChartInstance.data.datasets[0].borderColor = backgroundColors;
+                assetPerformanceChartInstance.update();
+            } else {
+                assetPerformanceChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total P&L (€)',
+                            data: pnLValues,
+                            backgroundColor: backgroundColors,
+                            borderColor: backgroundColors,
+                            borderWidth: 1
+                        }]
                     },
-                    scales: {
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Asset'
-                            }
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: { display: false },
+                            legend: { display: false },
                         },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'P&L (€)'
-                            },
-                            beginAtZero: true
+                        scales: {
+                            x: { title: { display: true, text: 'Asset' } },
+                            y: { title: { display: true, text: 'P&L (€)' }, beginAtZero: true }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         // Function to render trade type performance chart
@@ -1883,43 +1876,39 @@
 
             const labels = Object.keys(data);
             const pnLValues = labels.map(label => data[label].totalPnL);
-
             const backgroundColors = [
                 '#7f58af', /* purple for Buy */
                 '#f6ad55', /* orange for Sell */
                 '#a0aec0' /* Gray for other (if applicable) */
-            ]; 
+            ];
 
-            // Destroy old chart instance if it exists
             if (tradeTypePerformanceChartInstance) {
-                tradeTypePerformanceChartInstance.destroy();
-            }
-
-            tradeTypePerformanceChartInstance = new Chart(ctx, {
-                type: 'pie',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Total P&L (€)',
-                        data: pnLValues,
-                        backgroundColor: backgroundColors,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: false,
-                        },
-                        legend: {
-                            display: true,
-                            position: 'right',
+                tradeTypePerformanceChartInstance.data.labels = labels;
+                tradeTypePerformanceChartInstance.data.datasets[0].data = pnLValues;
+                tradeTypePerformanceChartInstance.data.datasets[0].backgroundColor = backgroundColors;
+                tradeTypePerformanceChartInstance.update();
+            } else {
+                tradeTypePerformanceChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total P&L (€)',
+                            data: pnLValues,
+                            backgroundColor: backgroundColors,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: { display: false },
+                            legend: { display: true, position: 'right' }
                         }
                     }
-                }
-            });
+                });
+            }
         }
 
         // --- Trading Session Status Logic ---
@@ -2033,61 +2022,54 @@
                 }
             });
 
-            // Destroy old chart instance if it exists
+            // If chart instance already exists, update its data
             if (tradingSessionsChartInstance) {
-                tradingSessionsChartInstance.destroy();
-            }
-
-            tradingSessionsChartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels, // Use session names as Y-axis labels
-                    datasets: datasets
-                },
-                options: {
-                    indexAxis: 'y', // Make it a horizontal bar chart
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: false,
+                tradingSessionsChartInstance.data.labels = labels;
+                tradingSessionsChartInstance.data.datasets = datasets;
+                tradingSessionsChartInstance.update();
+            } else {
+                // Otherwise, create a new chart instance
+                tradingSessionsChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels, // Use session names as Y-axis labels
+                        datasets: datasets
+                    },
+                    options: {
+                        indexAxis: 'y', // Make it a horizontal bar chart
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: { display: false },
+                            legend: { display: false },
+                            currentTimeLine: { // Plugin options
+                                lineColor: '#ef4444', /* red */
+                                lineWidth: 2,
+                                labelColor: '#ef4444',
+                                labelFont: '12px Inter'
+                            }
                         },
-                        legend: {
-                            display: false, // Hide dataset legends, labels are on Y-axis
-                        },
-                        currentTimeLine: { // Plugin options
-                            lineColor: '#ef4444', /* red */
-                            lineWidth: 2,
-                            labelColor: '#ef4444',
-                            labelFont: '12px Inter'
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                min: 0,
+                                max: 24,
+                                ticks: {
+                                    stepSize: 3, // Show ticks every 3 hours
+                                    callback: function(value) {
+                                        return value + 'h'; // Add 'h' suffix
+                                    }
+                                },
+                                title: { display: true, text: 'Time (UTC)' }
+                            },
+                            y: {
+                                title: { display: true, text: 'Session' }
+                            }
                         }
                     },
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            min: 0,
-                            max: 24,
-                            ticks: {
-                                stepSize: 3, // Show ticks every 3 hours
-                                callback: function(value) {
-                                    return value + 'h'; // Add 'h' suffix
-                                }
-                            },
-                            title: {
-                                display: true,
-                                text: 'Time (UTC)'
-                            }
-                        },
-                        y: {
-                            title: {
-                                display: true,
-                                text: 'Session'
-                            }
-                        }
-                    }
-                },
-                plugins: [currentTimeLinePlugin] // Register the plugin
-            });
+                    plugins: [currentTimeLinePlugin] // Register the plugin
+                });
+            }
         }
 
 
