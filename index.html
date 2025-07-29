@@ -378,7 +378,7 @@
                 <div class="space-y-4">
                     <div>
                         <label for="capital">Account Capital (€) :</label>
-                        <input type="number" id="capital" value="10000" min="1" step="any">
+                        <input type="number" id="capital" value="1000" min="1" step="any">
                     </div>
                     <div>
                         <label for="riskPercentage">Risk Percentage per Trade (%) :</label>
@@ -1021,8 +1021,7 @@
             switch (currencyPair) {
                 case 'EURUSD': case 'GBPUSD': case 'AUDUSD': case 'NZDUSD': pipValuePerStandardLot = 10; break;
                 case 'USDJPY': case 'EURJPY': case 'GBPJPY': pipValuePerStandardLot = 8.5; break; 
-                case 'XAUUSD': pipValuePerStandardLot = 10; break;
-                case 'DAX40': case 'SP500': case 'NASDAQ100': case 'CAC40': pipValuePerStandardLot = 1; break;
+                case 'XAUUSD': case 'NASDAQ100':case 'DAX40': case 'SP500': case 'CAC40': pipValuePerStandardLot = 1; break;
                 case 'custom':
                     pipValuePerStandardLot = parseFloat(document.getElementById('customPipValue').value);
                     if (isNaN(pipValuePerStandardLot) || pipValuePerStandardLot <= 0) {
