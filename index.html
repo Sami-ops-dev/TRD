@@ -15,88 +15,85 @@
             justify-content: center;
             align-items: flex-start; /* Align to top for scrolling */
             min-height: 100vh;
-            padding: 32px; /* Generous overall padding */
+            padding: 16px; /* Reduced overall padding for mobile */
         }
         .container {
             background-color: #ffffff;
-            padding: 4rem; /* Even more generous padding */
-            border-radius: 2rem; /* Significantly more rounded corners */
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25); /* Darker, more prominent shadow */
+            padding: 2rem; /* Adjusted padding for mobile */
+            border-radius: 1.5rem; /* Slightly less rounded corners */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15); /* Softer shadow */
             width: 100%;
-            max-width: 1200px;
+            max-width: 700px; /* Max width optimized for tablets/large phones */
             border: 1px solid #2d3748; /* Darker subtle border */
         }
         h1 {
-            /* Professional and  title styling */
-            font-size: 3.8rem; /* Even larger, more impactful title */
-            font-weight: 900; /* Extra bold */
-            margin-bottom: 2.5rem; /* More space below title */
+            font-size: 2.8rem; /* Adjusted title size for mobile */
+            font-weight: 900;
+            margin-bottom: 1.5rem; /* Adjusted space below title */
             text-align: center;
-            letter-spacing: -0.04em; /* Tighter letter spacing */
-            
-            /* Gradient text effect */
-            background: linear-gradient(45deg, #7f58af, #4299e1); /* Purple to Blue gradient  */
+            letter-spacing: -0.04em;
+            background: linear-gradient(45deg, #7f58af, #4299e1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: transparent; /* Fallback for non-webkit browsers */
-            
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle text shadow */
+            color: transparent;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         h2 {
             color: #2d3748;
-            font-size: 2.5rem; /* Larger section titles */
+            font-size: 2rem; /* Adjusted section titles for mobile */
             font-weight: 700;
-            margin-bottom: 2rem; /* More space */
+            margin-bottom: 1.5rem; /* Adjusted space */
             text-align: center;
         }
         h3 {
             color: #4a5568;
-            font-size: 1.875rem; /* Slightly larger sub-titles */
+            font-size: 1.5rem; /* Adjusted sub-titles for mobile */
             font-weight: 600;
-            margin-bottom: 1.5rem; /* More space */
+            margin-bottom: 1rem; /* Adjusted space */
             text-align: center;
         }
         label {
             display: block;
-            margin-bottom: 0.75rem; /* More space */
+            margin-bottom: 0.5rem; /* Adjusted space */
             color: #4a5568;
             font-weight: 600;
-            font-size: 1rem; /* Slightly larger label font */
+            font-size: 0.95rem; /* Slightly smaller label font */
         }
         input[type="number"], input[type="text"], input[type="date"], select, textarea {
             width: 100%;
-            padding: 1.125rem; /* More padding for inputs */
-            margin-bottom: 1.75rem; /* More space below inputs */
-            border: 1px solid #cbd5e0; /* Softer border */
-            border-radius: 0.85rem; /* More rounded */
-            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.08); /* More pronounced inner shadow */
-            transition: all 0.3s ease-out; /* Smoother transition */
+            padding: 0.9rem; /* Adjusted padding for inputs */
+            margin-bottom: 1.25rem; /* Adjusted space below inputs */
+            border: 1px solid #cbd5e0;
+            border-radius: 0.75rem; /* Adjusted rounded */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-out;
+            font-size: 0.95rem; /* Adjusted input font size */
         }
         input[type="number"]:focus, input[type="text"]:focus, input[type="date"]:focus, select:focus, textarea:focus {
             border-color: #7f58af; /* purple */
-            box-shadow: 0 0 0 6px rgba(127, 88, 175, 0.3); /* Larger, softer focus ring */
+            box-shadow: 0 0 0 4px rgba(127, 88, 175, 0.2); /* Smaller, softer focus ring */
             outline: none;
         }
         button {
             width: 100%;
-            padding: 1.25rem 2rem; /* More padding for buttons */
+            padding: 1rem 1.5rem; /* Adjusted padding for buttons */
             color: white;
             font-weight: 700;
-            border-radius: 1.25rem; /* More rounded */
+            border-radius: 1rem; /* Adjusted rounded */
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease-out; /* Smoother transition */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Stronger, softer shadow */
-            letter-spacing: 0.03em; /* Slightly wider letter spacing */
+            transition: all 0.3s ease-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Softer shadow */
+            letter-spacing: 0.02em; /* Slightly tighter letter spacing */
         }
         button:hover {
-            transform: translateY(-5px); /* More noticeable lift */
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2); /* Even larger shadow on hover */
+            transform: translateY(-3px); /* Less noticeable lift */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
         button:active {
             transform: translateY(0);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
         }
         .btn-primary {
             background-color: #7f58af; /* purple */
@@ -124,15 +121,16 @@
         }
         .result-box {
             background-color: #e0f2fe; /* Lighter blue */
-            padding: 1.75rem; /* More padding */
-            border-radius: 1rem; /* More rounded */
-            margin-top: 1.75rem; /* More margin */
+            padding: 1.25rem; /* Adjusted padding */
+            border-radius: 0.85rem; /* Adjusted rounded */
+            margin-top: 1.25rem; /* Adjusted margin */
             border: 1px solid #90cdf4;
             color: #2c5282;
             font-weight: 600;
             text-align: center;
-            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.08); /* More pronounced inner shadow */
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
             display: none;
+            font-size: 0.95rem; /* Adjusted result text size */
         }
         .result-box.show {
             display: block;
@@ -140,30 +138,32 @@
         .error-message {
             color: #c53030; /* Darker red for errors */
             background-color: #fed7d7;
-            padding: 1rem; /* More padding */
-            border-radius: 0.75rem; /* More rounded */
-            margin-bottom: 1.5rem; /* More space */
+            padding: 0.8rem; /* Adjusted padding */
+            border-radius: 0.6rem; /* Adjusted rounded */
+            margin-bottom: 1rem; /* Adjusted space */
             text-align: center;
             font-weight: 600;
             display: none;
+            font-size: 0.85rem; /* Adjusted error message font size */
         }
         .error-message.show {
             display: block;
         }
         .journal-entry {
             background-color: #f7fafc; /* Very light blue-gray */
-            padding: 1.5rem; /* More padding */
-            border-radius: 1rem; /* More rounded */
+            padding: 1.25rem; /* Adjusted padding */
+            border-radius: 0.9rem; /* Adjusted rounded */
             border: 1px solid #e2e8f0;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); /* Softer shadow */
             position: relative;
             transition: transform 0.2s ease-out;
         }
         .journal-entry:hover {
-            transform: translateY(-3px); /* More noticeable lift */
+            transform: translateY(-2px); /* Less noticeable lift */
         }
         .journal-entry p {
-            margin-bottom: 0.35rem; /* More space */
+            margin-bottom: 0.25rem; /* Adjusted space */
+            font-size: 0.9rem;
         }
         .journal-entry .label {
             font-weight: 600;
@@ -175,46 +175,49 @@
         .journal-entry .result-positive {
             color: #10b981; /* Emerald green */
             font-weight: 700;
+            font-size: 1rem; /* Slightly smaller result font */
         }
         .journal-entry .result-negative {
             color: #ef4444; /* Red */
             font-weight: 700;
+            font-size: 1rem; /* Slightly smaller result font */
         }
         .journal-actions {
             display: flex;
-            gap: 0.85rem; /* More space between buttons */
-            margin-top: 1.25rem; /* More space */
+            gap: 0.6rem; /* Adjusted space between buttons */
+            margin-top: 1rem; /* Adjusted space */
             justify-content: flex-end;
         }
         .journal-actions button {
             width: auto;
-            padding: 0.75rem 1.5rem; /* Adjusted padding */
-            font-size: 1rem; /* Slightly larger font */
-            border-radius: 0.75rem; /* More rounded */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for action buttons */
+            padding: 0.6rem 1.2rem; /* Adjusted padding */
+            font-size: 0.9rem; /* Smaller font */
+            border-radius: 0.6rem; /* Adjusted rounded */
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08); /* More subtle shadow */
         }
         .journal-actions button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
         /* Styles for performance dashboard */
         .performance-metric {
             background-color: #ebf8ff; /* Lighter blue */
-            padding: 1.5rem; /* More padding */
-            border-radius: 1rem;
+            padding: 1.25rem; /* Adjusted padding */
+            border-radius: 0.9rem;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); /* Softer shadow */
             transition: transform 0.2s ease-out;
         }
         .performance-metric:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         .performance-metric p {
-            margin-bottom: 0.35rem;
+            margin-bottom: 0.25rem;
             color: #4a5568;
+            font-size: 0.85rem;
         }
         .performance-metric .value {
-            font-size: 2rem; /* Larger font size */
+            font-size: 1.6rem; /* Adjusted font size */
             font-weight: 700;
             color: #2b6cb0; /* Darker blue */
         }
@@ -226,30 +229,31 @@
         }
         .detailed-stats-card {
             background-color: #f7fafc; /* Lighter background */
-            padding: 2rem; /* More padding */
-            border-radius: 1.25rem; /* More rounded */
+            padding: 1.5rem; /* Adjusted padding */
+            border-radius: 1rem; /* Adjusted rounded */
             border: 1px solid #e2e8f0;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Softer, larger shadow */
-            margin-bottom: 2rem; /* More margin */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer, larger shadow */
+            margin-bottom: 1.5rem; /* Adjusted margin */
             transition: transform 0.2s ease-out;
         }
         .detailed-stats-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
         .detailed-stats-card h4 {
-            font-size: 1.5rem; /* Slightly larger */
+            font-size: 1.25rem; /* Adjusted */
             font-weight: 700;
             color: #2d3748;
-            margin-bottom: 1.25rem; /* More margin */
+            margin-bottom: 1rem; /* Adjusted margin */
             text-align: center;
         }
         .detailed-stats-card table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
         }
         .detailed-stats-card th, .detailed-stats-card td {
-            padding: 0.75rem 1rem; /* More padding */
+            padding: 0.6rem 0.8rem; /* Adjusted padding */
             border: 1px solid #e2e8f0;
             text-align: left;
         }
@@ -275,13 +279,13 @@
         /* Specific styles for chart containers */
         .chart-container {
             position: relative;
-            height: 350px; /* Increased height for charts */
+            height: 280px; /* Reduced height for charts on mobile */
             width: 100%;
-            margin-bottom: 2rem; /* More margin */
+            margin-bottom: 1.5rem; /* Adjusted margin */
             border: 1px solid #cbd5e0;
-            border-radius: 1rem; /* More rounded */
+            border-radius: 0.9rem; /* Adjusted rounded */
             background-color: #ffffff;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06); /* Softer shadow */
         }
         /* Ensure tables are scrollable on smaller screens */
         .overflow-x-auto {
@@ -291,8 +295,8 @@
         .session-status-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
-            gap: 1rem; /* Increased gap */
-            margin-top: 2rem; /* More margin */
+            gap: 0.75rem; /* Adjusted gap */
+            margin-top: 1.5rem; /* Adjusted margin */
         }
         @media (min-width: 640px) { /* sm breakpoint */
             .session-status-grid {
@@ -303,23 +307,23 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 1rem; /* More padding */
-            border-radius: 0.85rem; /* More rounded */
+            padding: 0.85rem; /* Adjusted padding */
+            border-radius: 0.75rem; /* Adjusted rounded */
             background-color: #f7fafc; /* Lighter background */
-            font-size: 1rem; /* Slightly larger font */
+            font-size: 0.9rem; /* Adjusted font size */
             color: #4a5568;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04); /* Subtle shadow */
             transition: transform 0.15s ease-out;
         }
         .session-item:hover {
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
         .session-item .status-indicator {
-            width: 16px; /* Larger indicator */
-            height: 16px;
+            width: 14px; /* Slightly smaller indicator */
+            height: 14px;
             border-radius: 50%;
-            margin-bottom: 0.4rem; /* More space */
-            border: 1px solid rgba(0,0,0,0.1); /* Subtle border */
+            margin-bottom: 0.3rem; /* Adjusted space */
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .session-item.open .status-indicator {
             background-color: #48bb78; /* Brighter green for open */
@@ -330,7 +334,7 @@
         /* Styles for the session overlap chart */
         #tradingSessionsChartCanvas {
             border: 1px solid #cbd5e0;
-            border-radius: 0.75rem; /* More rounded */
+            border-radius: 0.75rem; /* Adjusted rounded */
             background-color: #ffffff;
         }
 
@@ -338,41 +342,177 @@
         .goal-progress-bar-container {
             width: 100%;
             background-color: #e2e8f0;
-            border-radius: 0.75rem; /* More rounded */
+            border-radius: 0.75rem; /* Adjusted rounded */
             overflow: hidden;
-            margin-top: 1.5rem; /* More margin */
+            margin-top: 1.25rem; /* Adjusted margin */
         }
         .goal-progress-bar {
-            height: 28px; /* Taller bar */
+            height: 24px; /* Slightly shorter bar */
             background-color: #7f58af; /* purple */
             width: 0%;
             border-radius: 0.75rem;
             text-align: center;
             color: white;
             font-weight: 700;
-            line-height: 28px;
+            line-height: 24px; /* Match height for vertical centering */
             transition: width 0.5s ease-out, background-color 0.3s ease-out;
-            font-size: 0.95rem; /* Slightly larger font */
+            font-size: 0.85rem; /* Adjusted font size */
         }
         .goal-progress-bar.achieved {
             background-color: #48bb78; /* Brighter green when achieved */
         }
         .goal-progress-bar-container + .result-box {
-            margin-top: 1rem; /* Closer to the bar */
+            margin-top: 0.8rem; /* Closer to the bar */
+        }
+
+        /* Responsive Grid Adjustments */
+        @media (min-width: 768px) { /* md breakpoint - often for tablets */
+            .grid-cols-1.md\:grid-cols-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .grid-cols-1.md\:grid-cols-2.gap-6 {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) { /* lg breakpoint - for larger tablets and desktops */
+            .container {
+                padding: 4rem;
+                max-width: 1200px;
+            }
+            h1 {
+                font-size: 3.8rem;
+                margin-bottom: 2.5rem;
+            }
+            h2 {
+                font-size: 2.5rem;
+                margin-bottom: 2rem;
+            }
+            h3 {
+                font-size: 1.875rem;
+                margin-bottom: 1.5rem;
+            }
+            label {
+                font-size: 1rem;
+            }
+            input[type="number"], input[type="text"], input[type="date"], select, textarea {
+                padding: 1.125rem;
+                margin-bottom: 1.75rem;
+                border-radius: 0.85rem;
+                font-size: 1rem;
+            }
+            button {
+                padding: 1.25rem 2rem;
+                border-radius: 1.25rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+            .result-box {
+                padding: 1.75rem;
+                border-radius: 1rem;
+                margin-top: 1.75rem;
+                font-size: 1.05rem;
+            }
+            .error-message {
+                padding: 1rem;
+                border-radius: 0.75rem;
+                margin-bottom: 1.5rem;
+                font-size: 1rem;
+            }
+            .journal-entry {
+                padding: 1.5rem;
+                border-radius: 1rem;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            }
+            .journal-entry p {
+                margin-bottom: 0.35rem;
+                font-size: initial;
+            }
+            .journal-entry .result-positive, .journal-entry .result-negative {
+                font-size: initial;
+            }
+            .journal-actions {
+                gap: 0.85rem;
+                margin-top: 1.25rem;
+            }
+            .journal-actions button {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+                border-radius: 0.75rem;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+            .performance-metric {
+                padding: 1.5rem;
+                border-radius: 1rem;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            }
+            .performance-metric p {
+                font-size: initial;
+            }
+            .performance-metric .value {
+                font-size: 2rem;
+            }
+            .detailed-stats-card {
+                padding: 2rem;
+                border-radius: 1.25rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+                margin-bottom: 2rem;
+            }
+            .detailed-stats-card h4 {
+                font-size: 1.5rem;
+                margin-bottom: 1.25rem;
+            }
+            .detailed-stats-card table {
+                margin-top: 1rem;
+                font-size: initial;
+            }
+            .detailed-stats-card th, .detailed-stats-card td {
+                padding: 0.75rem 1rem;
+            }
+            .chart-container {
+                height: 350px;
+                margin-bottom: 2rem;
+                border-radius: 1rem;
+            }
+            .session-status-grid {
+                gap: 1rem;
+                margin-top: 2rem;
+            }
+            .session-item {
+                padding: 1rem;
+                border-radius: 0.85rem;
+                font-size: 1rem;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            }
+            .session-item .status-indicator {
+                width: 16px;
+                height: 16px;
+                margin-bottom: 0.4rem;
+            }
+            .goal-progress-bar-container {
+                margin-top: 1.5rem;
+            }
+            .goal-progress-bar {
+                height: 28px;
+                line-height: 28px;
+                font-size: 0.95rem;
+            }
+            .goal-progress-bar-container + .result-box {
+                margin-top: 1rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header class="text-center mb-10">
-            <h1 class="text-indigo-700 mb-4">Faynalytics</h1>
-            <p class="text-gray-600 text-lg">Manage your risk and track your performance.</p>
+        <header class="text-center mb-6 md:mb-10">
+            <h1 class="text-indigo-700 mb-2 md:mb-4">Faynalytics</h1>
+            <p class="text-gray-600 text-base md:text-lg">Manage your risk and track your performance.</p>
         </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-6 mt-8">Global Performance Statistics</h2>
-                <div id="performanceDashboard" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-gray-800 mb-4 md:mb-6 mt-4 md:mt-8">Global Performance Statistics</h2>
+                <div id="performanceDashboard" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 text-center">
                     <div class="performance-metric">
                         <p>Total Trades</p>
                         <p id="totalTrades" class="value">0</p>
@@ -411,9 +551,9 @@
                     </div>
                 </div>
 
-                <h3 class="text-gray-800 mb-4 mt-8">Performance Goal Tracker</h3>
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Performance Goal Tracker</h3>
                 <div id="goalTrackerErrorMessage" class="error-message"></div>
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <div>
                         <label for="initialCapital">Initial Capital (€) :</label>
                         <input type="number" id="initialCapital" value="10000" min="1" step="any">
@@ -430,12 +570,12 @@
                         <div class="goal-progress-bar-container">
                             <div id="goalProgressBar" class="goal-progress-bar"></div>
                         </div>
-                        <p class="text-xs text-gray-600 mt-2">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
+                        <p class="text-xs text-gray-600 mt-1">Note: Progress is calculated based on "Total P&L (€)" and "Target P&L (€)". "Initial Capital (€)" is for context.</p>
                     </div>
                 </div>
 
-                <h3 class="text-gray-800 mb-4 mt-8">Trading Session Status (UTC)</h3>
-                <div id="sessionStatus" class="session-status-grid mb-4">
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Trading Session Status (UTC)</h3>
+                <div id="sessionStatus" class="session-status-grid mb-3">
                     <div class="session-item">
                         <div id="londonStatus" class="status-indicator"></div>
                         <span>London</span>
@@ -453,15 +593,15 @@
                         <span>Sydney</span>
                     </div>
                 </div>
-                <div class="chart-container" style="height: 200px;">
+                <div class="chart-container" style="height: 180px;">
                     <canvas id="tradingSessionsChartCanvas"></canvas>
                 </div>
             </section>
 
-            <section class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-                <h2 class="text-gray-800 mb-6">Trading Journal</h2>
+            <section class="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">
+                <h2 class="text-gray-800 mb-4 md:mb-6">Trading Journal</h2>
                 <div id="journalErrorMessage" class="error-message"></div>
-                <form id="journalForm" class="space-y-4 mb-8">
+                <form id="journalForm" class="space-y-3 mb-6">
                     <div>
                         <label for="journalDate">Date :</label>
                         <input type="date" id="journalDate" required>
@@ -485,7 +625,7 @@
                             <option value="CAC40">CAC 40 (France)</option>
                             <option value="other">Other (enter name)</option>
                         </select>
-                        <input type="text" id="journalAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.5rem;">
+                        <input type="text" id="journalAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.3rem;">
                     </div>
                     <div>
                         <label for="journalTradeType">Trade Type :</label>
@@ -498,7 +638,7 @@
                         <label for="journalSetup">Setup :</label>
                         <input type="text" id="journalSetup" placeholder="Ex: Resistance breakout, MA rejection">
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                         <div>
                             <label for="journalEntryPrice">Entry :</label>
                             <input type="number" id="journalEntryPrice" step="any" required>
@@ -520,27 +660,29 @@
                         <label for="journalPositionSize">Position Size :</label>
                         <input type="number" id="journalPositionSize" step="any" required>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label for="journalResultEuro">Result (€) :</label>
-                            <input type="number" id="journalResultEuro" step="any"> </div>
+                            <input type="number" id="journalResultEuro" step="any">
+                        </div>
                         <div>
                             <label for="journalResultPercentage">Result (%) :</label>
-                            <input type="number" id="journalResultPercentage" step="any"> </div>
+                            <input type="number" id="journalResultPercentage" step="any">
+                        </div>
                     </div>
                     <div>
                         <label for="journalComment">Comment / Emotion :</label>
                         <textarea id="journalComment" rows="3" placeholder="Notes on the trade, felt emotions..."></textarea>
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <button type="button" class="btn-secondary" id="addUpdateJournalBtn">Add to Journal</button>
                         <button type="button" class="btn-info" id="saveDraftBtn">Save Draft</button>
                     </div>
                     <button type="button" class="btn-info mt-2" id="cancelEditBtn" style="display:none;">Cancel Edit</button>
                 </form>
 
-                <h3 class="text-gray-800 mb-4 mt-8">Filter & Sort Options</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Filter & Sort Options</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
                     <div>
                         <label for="filterAssetSelect">Filter by Asset :</label>
                         <select id="filterAssetSelect" onchange="applyFiltersAndSort()">
@@ -561,7 +703,7 @@
                             <option value="CAC40">CAC 40 (France)</option>
                             <option value="other">Other (enter name)</option>
                         </select>
-                        <input type="text" id="filterAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.5rem;" onkeyup="applyFiltersAndSort()">
+                        <input type="text" id="filterAssetCustom" placeholder="Enter asset name" style="display:none; margin-top: 0.3rem;" onkeyup="applyFiltersAndSort()">
                     </div>
                     <div>
                         <label for="filterTradeType">Filter by Trade Type :</label>
@@ -588,24 +730,24 @@
                         </select>
                     </div>
                 </div>
-                <button onclick="resetFiltersAndSort()" class="btn-danger mb-8">Reset Filters & Sort</button>
+                <button onclick="resetFiltersAndSort()" class="btn-danger mb-6">Reset Filters & Sort</button>
 
 
-                <h3 class="text-gray-800 mb-4 mt-8">My Journal Entries</h3>
-                <p class="text-center text-gray-600" id="noEntriesMessage">No journal entries yet. Add your first trade!</p>
-                <div id="journalEntriesContainer" class="space-y-4">
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">My Journal Entries</h3>
+                <p class="text-center text-gray-600 text-sm" id="noEntriesMessage">No journal entries yet. Add your first trade!</p>
+                <div id="journalEntriesContainer" class="space-y-3">
                     </div>
             </section>
 
-            <section class="lg:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200 mb-8">
-                <h2 class="text-gray-800 mb-6">Detailed Statistics & Charts</h2>
+            <section class="md:col-span-2 bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200 mb-6">
+                <h2 class="text-gray-800 mb-4 md:mb-6">Detailed Statistics & Charts</h2>
                 
-                <h3 class="text-gray-800 mb-4 mt-8">Equity Curve (Cumulative P&L)</h3>
+                <h3 class="text-gray-800 mb-3 mt-6 md:mt-8">Equity Curve (Cumulative P&L)</h3>
                 <div class="chart-container">
                     <canvas id="equityCurveChart"></canvas>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="detailed-stats-card">
                         <h4>Performance by Asset</h4>
                         <div id="performanceByAssetTable" class="overflow-x-auto">
@@ -620,7 +762,7 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div class="detailed-stats-card">
                         <h4>Performance by Asset</h4>
                         <div class="chart-container">
